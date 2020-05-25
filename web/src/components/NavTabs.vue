@@ -2,9 +2,9 @@
     <div>
         <b-nav tabs id="navtabs">
             <b-nav-item disabled>corey.tech Newsletter Builder</b-nav-item>
-            <b-nav-item>Newsletter</b-nav-item>
-            <b-nav-item active>Articles</b-nav-item>
-            <b-nav-item>Preview</b-nav-item>
+            <b-nav-item to="/newsletters" exact-active-class="active">Newsletters</b-nav-item>
+            <b-nav-item to="/articles" exact-active-class="active">Articles</b-nav-item>
+            <b-nav-item to="/preview" exact-active-class="active">Preview</b-nav-item>
         </b-nav>
     </div>
 </template>
