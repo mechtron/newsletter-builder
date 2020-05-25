@@ -1,14 +1,5 @@
 <template>
     <div>
-        <b-nav tabs>
-            <b-nav-item disabled>corey.tech Newsletter Builder</b-nav-item>
-            <b-nav-item>Newsletter</b-nav-item>
-            <b-nav-item active>Articles</b-nav-item>
-            <b-nav-item>Preview</b-nav-item>
-        </b-nav>
-
-        <br/>
-
         <b-container class="bv-example-row">
             <b-row>
                 <b-col>

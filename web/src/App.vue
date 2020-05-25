@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <NavTabs/>
     <Builder/>
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
@@ -7,12 +8,14 @@
 </template>
 
 <script>
+import NavTabs from './components/NavTabs.vue'
 import Builder from './components/Builder.vue'
 // import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
   components: {
+    NavTabs,
     Builder,
     // HelloWorld
   }
