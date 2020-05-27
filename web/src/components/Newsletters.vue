@@ -8,7 +8,7 @@
                     </b-dropdown>
                 </b-col>
                 <b-col cols="6">
-                    <b-button variant="success">
+                    <b-button variant="success"  @click="newNewsletter">
                         <b-icon icon="plus"></b-icon>
                     </b-button>
                 </b-col>
@@ -102,7 +102,7 @@
                 intro: "Welcome to issue #1",
                 articles: []
             },
-            3: {
+            2: {
                 version: "0.1.0",
                 date: "2020-05-15",
                 intro: "Welcome to issue #2",
@@ -120,13 +120,22 @@
         this.newsletters[this.selected_newsletter].intro = this.form.intro
         alert("Issue #" + this.selected_newsletter + " successfully updated")
       },
-      onReset(evt) {
+      newNewsletter(evt) {
         evt.preventDefault()
+        var issues_numbers = Object.keys(this.newsletters).sort()
+        var next_issue_number = parseInt(issues_numbers[issues_numbers.length - 1]) + 1
+        this.newsletters[next_issue_number] = {
+            version: null,
+            date: null,
+            intro: null,
+            articles: []
+        }
+        alert("Successfully created Issue #" + next_issue_number)
         // Reset our form values
-        this.form.email = ''
-        this.form.name = ''
-        this.form.food = null
-        this.form.checked = []
+        this.form.issue_number = next_issue_number
+        this.form.version = null
+        this.form.date = null
+        this.form.intro = null
         // Trick to reset/clear native browser form validation state
         this.show = false
         this.$nextTick(() => {
