@@ -3,8 +3,8 @@
         <b-container class="bv-example-row">
             <b-row>
                 <b-col cols="6">
-                    <b-dropdown id="dropdown-1" text="Select Newsletter" class="m-md-2">
-                        <b-dropdown-item @click="newsletterSelected" v-for="n in newsletters" :key="n.issue_number">Issue #{{n.issue_number}}</b-dropdown-item>
+                    <b-dropdown id="dropdown-1" text="Select Newsletter " class="m-md-2">
+                        <b-dropdown-item @click="newsletterSelected" v-for="(key, n) in newsletters" :key="n">Issue #{{n}}</b-dropdown-item>
                     </b-dropdown>
                 </b-col>
                 <b-col cols="6">
@@ -89,26 +89,23 @@
           intro: null
         },
         show: true,
-        newsletters: [
-            {
-                issue_number: 0,
+        newsletters: {
+            0: {
                 version: "1.1.0",
                 date: "2020-04-15",
                 intro: "Welcome to issue #0"
             },
-            {
-                issue_number: 1,
+            1: {
                 version: "1.0.0",
                 date: "2020-04-30",
                 intro: "Welcome to issue #1"
             },
-            {
-                issue_number: 2,
+            4: {
                 version: "0.1.0",
                 date: "2020-05-15",
                 intro: "Welcome to issue #2"
             }
-        ],
+        },
         selected_newsletter: 0
       }
     },
@@ -135,6 +132,7 @@
         console.log(evt.toElement.text)
         var issue_number = evt.toElement.text.split("#")[1]
         this.form.issue_number = issue_number
+        this.selected_newsletter = issue_number
         this.form.version = this.newsletters[issue_number].version
         this.form.date = this.newsletters[issue_number].date
         this.form.intro = this.newsletters[issue_number].intro
