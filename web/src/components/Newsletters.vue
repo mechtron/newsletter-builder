@@ -17,64 +17,65 @@
 
         <br/>
 
-        <b-row class="justify-content-md-center">
-            <b-col col lg="1"></b-col>
-            <b-col cols="12" md="auto">
-                <b-form @submit="onSubmit" v-if="show">
+        <b-container class="bv-example-row">
+            <b-row class="justify-content-md-center">
+                <b-col col lg="1"></b-col>
+                <b-col cols="12" md="auto">
+                    <b-form @submit="onSubmit" v-if="show">
 
-                    <b-form-group
-                    id="input-group-1" label-for="input-1">
-                        <b-input-group readonly prepend="Issue #" class="mt-3">
-                            <b-form-input
-                            id="input-1"
-                            v-model="form.issue_number"
-                            type="number"
-                            required
-                            >
-                            </b-form-input>
-                        </b-input-group>
-                    </b-form-group>
+                        <b-form-group
+                        id="input-group-1" label-for="input-1">
+                            <b-input-group readonly prepend="Issue #" class="mt-3">
+                                <b-form-input
+                                id="input-1"
+                                v-model="form.issue_number"
+                                type="number"
+                                required
+                                >
+                                </b-form-input>
+                            </b-input-group>
+                        </b-form-group>
 
-                    <b-form-group id="input-group-2" label-for="input-4">
-                        <b-input-group prepend="Version" class="mt-3">
-                            <b-form-input
-                            id="input-2"
-                            v-model="form.version"
-                            type="text"
-                            >
-                            </b-form-input>
-                        </b-input-group>
-                    </b-form-group>
+                        <b-form-group id="input-group-2" label-for="input-4">
+                            <b-input-group prepend="Version" class="mt-3">
+                                <b-form-input
+                                id="input-2"
+                                v-model="form.version"
+                                type="text"
+                                >
+                                </b-form-input>
+                            </b-input-group>
+                        </b-form-group>
 
-                    <b-form-group id="input-group-3" label-for="input-3">
-                        <b-input-group prepend="Date" class="mt-3">
-                            <b-form-input
-                            id="input-3"
-                            v-model="form.date"
-                            type="date"
-                            >
-                            </b-form-input>
-                        </b-input-group>
-                    </b-form-group>
+                        <b-form-group id="input-group-3" label-for="input-3">
+                            <b-input-group prepend="Date" class="mt-3">
+                                <b-form-input
+                                id="input-3"
+                                v-model="form.date"
+                                type="date"
+                                >
+                                </b-form-input>
+                            </b-input-group>
+                        </b-form-group>
 
-                    <b-form-group id="input-group-4" label="Intro paragraph:" label-for="input-4">
-                        <b-form-textarea
-                            id="textarea"
-                            v-model="form.intro"
-                            placeholder="Say something thought provoking.."
-                            rows="3"
-                            max-rows="6"
-                        ></b-form-textarea>
-                    </b-form-group>
+                        <b-form-group id="input-group-4" label="Intro paragraph:" label-for="input-4">
+                            <b-form-textarea
+                                id="textarea"
+                                v-model="form.intro"
+                                placeholder="Say something thought provoking.."
+                                rows="3"
+                                max-rows="6"
+                            ></b-form-textarea>
+                        </b-form-group>
 
-                    <b-button-group class="mx-1">
-                    <b-button type="submit" variant="primary">Save</b-button>
-                    </b-button-group>
-                </b-form>
-            </b-col>
-            <b-col col lg="1"></b-col>
-        </b-row>
-
+                        <b-button-group class="mx-1">
+                        <b-button type="submit" variant="primary">Save</b-button>
+                        </b-button-group>
+                    </b-form>
+                </b-col>
+                <b-col col lg="1"></b-col>
+            </b-row>
+        </b-container>
     </div>
 </template>
 
