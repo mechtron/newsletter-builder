@@ -63,7 +63,7 @@
                                 id="textarea"
                                 v-model="form.intro"
                                 placeholder="Say something thought provoking.."
-                                rows="3"
+                                rows="5"
                                 max-rows="6"
                             ></b-form-textarea>
                         </b-form-group>
@@ -116,6 +116,7 @@
             articles: []
         }
         alert("Successfully created Issue #" + next_issue_number)
+        this.selected_newsletter = next_issue_number
         // Reset our form values
         this.form.issue_number = next_issue_number
         this.form.version = null
@@ -130,8 +131,8 @@
       newsletterSelected(evt) {
         evt.preventDefault()
         var issue_number = evt.toElement.text.split("#")[1]
-        this.form.issue_number = issue_number
         this.selected_newsletter = issue_number
+        this.form.issue_number = issue_number
         this.form.version = this.newsletters[issue_number].version
         this.form.date = this.newsletters[issue_number].date
         this.form.intro = this.newsletters[issue_number].intro
