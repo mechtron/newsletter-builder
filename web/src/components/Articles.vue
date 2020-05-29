@@ -42,7 +42,7 @@
                                 >
                                 </b-form-input>
                                 <b-input-group-append>
-                                    <b-button>Open URL</b-button>
+                                    <b-button :href="this.form.url" target="_blank">Open URL</b-button>
                                 </b-input-group-append>
                             </b-input-group>
                         </b-form-group>
