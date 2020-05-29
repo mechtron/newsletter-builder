@@ -90,26 +90,7 @@
           intro: null
         },
         show: true,
-        newsletters: {
-            0: {
-                version: "1.1.0",
-                date: "2020-04-15",
-                intro: "Welcome to issue #0",
-                articles: []
-            },
-            1: {
-                version: "1.0.0",
-                date: "2020-04-30",
-                intro: "Welcome to issue #1",
-                articles: []
-            },
-            2: {
-                version: "0.1.0",
-                date: "2020-05-15",
-                intro: "Welcome to issue #2",
-                articles: []
-            }
-        },
+        newsletters: {},
         selected_newsletter: 0
       }
     },
@@ -124,7 +105,10 @@
       newNewsletter(evt) {
         evt.preventDefault()
         var issues_numbers = Object.keys(this.newsletters).sort()
-        var next_issue_number = parseInt(issues_numbers[issues_numbers.length - 1]) + 1
+        var next_issue_number = 0
+        if (issues_numbers.length > 0) {
+            next_issue_number = parseInt(issues_numbers[issues_numbers.length - 1]) + 1
+        }
         this.newsletters[next_issue_number] = {
             version: null,
             date: null,
