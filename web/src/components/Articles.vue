@@ -215,12 +215,14 @@
         this.updateFormFields()
       },
       updateFormFields() {
-        this.form.url = this.newsletters[this.selected_newsletter].articles[this.selected_article].url
-        this.form.author = this.newsletters[this.selected_newsletter].articles[this.selected_article].author
-        this.form.description = this.newsletters[this.selected_newsletter].articles[this.selected_article].description
-        this.form.image_url = this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url
-        this.form.category = this.newsletters[this.selected_newsletter].articles[this.selected_article].category
-        this.form.top_cream = this.newsletters[this.selected_newsletter].articles[this.selected_article].top_cream
+        if (this.newsletters.length > 0 && this.newsletters[this.selected_newsletter].articles.length > 0) {
+          this.form.url = this.newsletters[this.selected_newsletter].articles[this.selected_article].url
+          this.form.author = this.newsletters[this.selected_newsletter].articles[this.selected_article].author
+          this.form.description = this.newsletters[this.selected_newsletter].articles[this.selected_article].description
+          this.form.image_url = this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url
+          this.form.category = this.newsletters[this.selected_newsletter].articles[this.selected_article].category
+          this.form.top_cream = this.newsletters[this.selected_newsletter].articles[this.selected_article].top_cream   
+        }
       }
     },
     mounted() {
