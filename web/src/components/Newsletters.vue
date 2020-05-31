@@ -80,7 +80,16 @@
 </template>
 
 <script>
+  import { store, mutations } from "./store";
   export default {
+    computed: {
+      newsletters() {
+        return store.newsletters;
+      },
+      selected_newsletter() {
+        return store.selected_newsletter;
+      }
+    },
     data() {
       return {
         form: {
@@ -89,12 +98,12 @@
           date: null,
           intro: null
         },
-        show: true,
-        newsletters: {},
-        selected_newsletter: 0
+        show: true
       }
     },
     methods: {
+      setNewsletter: mutations.setNewsletter,
+      setArticle: mutations.setArticle,
       onSubmit(evt) {
         evt.preventDefault()
         this.newsletters[this.selected_newsletter].version = this.form.version
@@ -130,8 +139,9 @@
       },
       newsletterSelected(evt) {
         evt.preventDefault()
-        var issue_number = evt.toElement.text.split("#")[1]
-        this.selected_newsletter = issue_number
+        var issue_number = evt.target.text.split("#")[1]
+        this.setNewsletter(issue_number)
+        this.setArticle(0)
         this.form.issue_number = issue_number
         this.form.version = this.newsletters[issue_number].version
         this.form.date = this.newsletters[issue_number].date

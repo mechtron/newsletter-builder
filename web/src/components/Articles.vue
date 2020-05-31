@@ -109,7 +109,19 @@
 </template>
 
 <script>
+  import { store, mutations } from "./store";
   export default {
+    computed: {
+      newsletters() {
+        return store.newsletters;
+      },
+      selected_newsletter() {
+        return store.selected_newsletter;
+      },
+      selected_article() {
+        return store.selected_article;
+      }
+    },
     data() {
       return {
         show: true,
@@ -121,61 +133,6 @@
           category: null,
           top_cream: false
         },
-        newsletters: {
-            0: {
-                version: "1.1.0",
-                date: "2020-04-15",
-                intro: "Welcome to issue #0",
-                articles: []
-            },
-            1: {
-                version: "1.0.0",
-                date: "2020-04-30",
-                intro: "Welcome to issue #1",
-                articles: [
-                    {
-                        url: "1",
-                        author: "1",
-                        description: "1",
-                        image_url: "1",
-                        category: "1",
-                        top_cream: false
-                    },
-                    {
-                        url: "2",
-                        author: "2",
-                        description: "2",
-                        image_url: "2",
-                        category: "2",
-                        top_cream: true
-                    },
-                    {
-                        url: "3",
-                        author: "3",
-                        description: "3",
-                        image_url: "3",
-                        category: "3",
-                        top_cream: false
-                    },
-                    {
-                        url: "4",
-                        author: "4",
-                        description: "4",
-                        image_url: "4",
-                        category: "4",
-                        top_cream: false
-                    }
-                ]
-            },
-            2: {
-                version: "0.1.0",
-                date: "2020-05-15",
-                intro: "Welcome to issue #2",
-                articles: []
-            }
-        },
-        selected_newsletter: 1,
-        selected_article: 0,
         categories: [
             { text: 'Select One', value: null },
             'Society',
@@ -193,6 +150,8 @@
       }
     },
     methods: {
+      setNewsletter: mutations.setNewsletter,
+      setArticle: mutations.setArticle,
       saveArticle(evt) {
         evt.preventDefault()
         this.newsletters[this.selected_newsletter].articles[this.selected_article].url = this.form.url
@@ -201,7 +160,7 @@
         this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url = this.form.image_url
         this.newsletters[this.selected_newsletter].articles[this.selected_article].category = this.form.category
         this.newsletters[this.selected_newsletter].articles[this.selected_article].top_cream = this.form.top_cream
-        alert("Newsletter #" + parseInt(this.selected_newsletter + 1) + " Article #" + parseInt(this.selected_article + 1) + " successfully updated")
+        alert("Newsletter #" + this.selected_newsletter + " Article #" + parseInt(this.selected_article + 1) + " successfully updated")
       },
       onReset(evt) {
         evt.preventDefault()
@@ -219,17 +178,17 @@
       },
       changeArticle(action) {
         if (action == "first") {
-            this.selected_article = 0
+            this.setArticle(0)
         } else if (action == "previous") {
             if (this.selected_article > 0) {
-                this.selected_article -= 1
+                this.setArticle(this.selected_article - 1)
             }
         } else if (action == "next") {
             if (this.selected_article < this.newsletters[this.selected_newsletter].articles.length - 1) {
-                this.selected_article += 1
+                this.setArticle(this.selected_article + 1)
             }
         } else if (action == "last") {
-            this.selected_article = this.newsletters[this.selected_newsletter].articles.length - 1
+            this.setArticle(this.newsletters[this.selected_newsletter].articles.length - 1)
         } else {
             console.log("Unexpecteed action")
         }
@@ -251,7 +210,7 @@
         this.newsletters[this.selected_newsletter].articles.splice(this.selected_article, 1)
         alert("Article #" + parseInt(this.selected_article + 1) + " (with URL " + deleted_article_url + ") successfully deleted")
         if (this.selected_article != 0) {
-            this.selected_article = this.selected_article - 1
+            this.setArticle(this.selected_article - 1)
         }
         this.updateFormFields()
       },
