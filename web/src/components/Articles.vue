@@ -81,17 +81,15 @@
                         </b-form-group>
 
                         <b-form-group id="input-group-6">
-                            <b-form-checkbox-group v-model="form.top_cream" id="checkboxes-6">
-                            <b-form-checkbox value="me">Top cream?</b-form-checkbox>
-                            </b-form-checkbox-group>
+                            <b-form-checkbox v-model="form.top_cream">Top cream?</b-form-checkbox>
                         </b-form-group>
 
                         <b-button-group class="mx-1">
-                        <b-button type="reset" variant="warning">Reset</b-button>
-                        <b-button type="submit" variant="primary">Save</b-button>
+                            <b-button type="reset" variant="warning">Reset</b-button>
+                            <b-button type="submit" variant="primary">Save</b-button>
                         </b-button-group>
                     </b-form>
-                
+
                 </b-col>
                 <b-col col lg="1"></b-col>
             </b-row>
