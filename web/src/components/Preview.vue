@@ -3,7 +3,7 @@
     <b-container class="bv-example-row">
       <b-row class="justify-content-md-center">
           <b-col col lg="1"></b-col>
-          <b-col cols="12" md="auto">
+          <b-col cols="12">
             <b-button id="generate-button" variant="success">
             Generate <b-icon icon="play-fill"></b-icon>
             </b-button>
@@ -13,7 +13,7 @@
               v-model="text"
               placeholder="Hit the Generate button!"
               rows="10"
-              max-rows="20"
+              max-rows="16"
             ></b-form-textarea>
           </b-col>
           <b-col col lg="1"></b-col>

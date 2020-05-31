@@ -20,7 +20,7 @@
         <b-container class="bv-example-row">
             <b-row class="justify-content-md-center">
                 <b-col col lg="1"></b-col>
-                <b-col cols="12" md="auto">
+                <b-col cols="8">
                     <b-form @submit="onSubmit" v-if="show">
 
                         <b-form-group

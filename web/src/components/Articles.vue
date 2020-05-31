@@ -26,7 +26,7 @@
         <b-container class="bv-example-row">
             <b-row class="justify-content-md-center">
                 <b-col col lg="1"></b-col>
-                <b-col cols="12" md="auto">
+                <b-col cols="10">
                     <b-form @submit="saveArticle" @reset="onReset" v-if="show">
                         <b-form-group
                             id="input-group-1"
