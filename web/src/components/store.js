@@ -64,7 +64,8 @@ export const store = Vue.observable({
         }
     },
     selected_newsletter: 1,
-    selected_article: 0
+    selected_article: 0,
+    newsletter_markup: ""
 });
 
 export const mutations = {
@@ -73,5 +74,8 @@ export const mutations = {
     },
     setArticle(selected_article) {
         store.selected_article = selected_article;
+    },
+    setNewsletterMarkup(newsletter_markup) {
+        store.newsletter_markup = newsletter_markup;
     }
 };

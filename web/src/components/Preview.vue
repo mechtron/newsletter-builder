@@ -4,13 +4,13 @@
       <b-row class="justify-content-md-center">
           <b-col col lg="1"></b-col>
           <b-col cols="12">
-            <b-button id="generate-button" variant="success">
+            <b-button id="generate-button" variant="success" @click="generateNewsletter">
             Generate <b-icon icon="play-fill"></b-icon>
             </b-button>
             <br/>
             <b-form-textarea
               id="textarea"
-              v-model="text"
+              v-model="newsletterMarkup"
               placeholder="Hit the Generate button!"
               rows="10"
               max-rows="16"
@@ -29,10 +29,21 @@
 </style>
 
 <script>
+  import { store, mutations } from "./store";
   export default {
-    data() {
-      return {
-        text: ''
+    computed: {
+      newsletters() {
+        return store.newsletters;
+      },
+      newsletterMarkup() {
+        return store.newsletter_markup;
+      }
+    },
+    methods: {
+      setNewsletterMarkup: mutations.setNewsletterMarkup,
+      generateNewsletter(evt) {
+        evt.preventDefault()
+        this.setNewsletterMarkup(JSON.stringify(this.newsletters))
       }
     }
   }
