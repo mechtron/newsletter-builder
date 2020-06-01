@@ -65,7 +65,8 @@ export const store = Vue.observable({
     },
     selected_newsletter: 1,
     selected_article: 0,
-    newsletter_markup: ""
+    newsletter_markup: "",
+    newsletter_markup_updated: "Last updated: never"
 });
 
 export const mutations = {
@@ -77,5 +78,8 @@ export const mutations = {
     },
     setNewsletterMarkup(newsletter_markup) {
         store.newsletter_markup = newsletter_markup;
+    },
+    setNewsletterMarkupLastUpdated(last_updated) {
+        store.newsletter_markup_updated = last_updated;
     }
 };
