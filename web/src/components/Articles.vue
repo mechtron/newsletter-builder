@@ -91,7 +91,6 @@
                     </b-form>
 
                 </b-col>
-                <b-col col lg="1"></b-col>
             </b-row>
         </b-container>
 
