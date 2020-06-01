@@ -95,7 +95,7 @@
             </b-row>
         </b-container>
 
-        <b-card class="mt-3" header="Not worthy?">
+        <b-card class="mt-3" header="Not up to snuff?">
             <b-button variant="danger" @click="deleteArticle"><b-icon icon="trash"></b-icon></b-button>
         </b-card>
 
@@ -156,14 +156,17 @@
         this.newsletters[this.selected_newsletter].articles[this.selected_article].top_cream = this.form.top_cream
         alert("Newsletter #" + this.selected_newsletter + " Article #" + parseInt(this.selected_article + 1) + " successfully updated")
       },
-      onReset(evt) {
-        evt.preventDefault()
-        // Reset our form values
+      resetFormFields() {
+        this.form.url = null
         this.form.author = null
         this.form.description = null
         this.form.image_url = null
         this.form.category = null
         this.form.top_cream = false
+      },
+      onReset(evt) {
+        evt.preventDefault()
+        this.resetFormFields()
         // Trick to reset/clear native browser form validation state
         this.show = false
         this.$nextTick(() => {
@@ -200,13 +203,18 @@
         this.changeArticle('last')
       },
       deleteArticle() {
-        var deleted_article_url = this.newsletters[this.selected_newsletter].articles[this.selected_article].url
-        this.newsletters[this.selected_newsletter].articles.splice(this.selected_article, 1)
-        alert("Article #" + parseInt(this.selected_article + 1) + " (with URL " + deleted_article_url + ") successfully deleted")
-        if (this.selected_article != 0) {
+        if (this.newsletters[this.selected_newsletter].articles.length > 0) {
+          var deleted_article_url = this.newsletters[this.selected_newsletter].articles[this.selected_article].url
+          this.newsletters[this.selected_newsletter].articles.splice(this.selected_article, 1)
+          alert("Article #" + parseInt(this.selected_article + 1) + " (with URL " + deleted_article_url + ") successfully deleted")
+          if (this.selected_article != 0) {
             this.setArticle(this.selected_article - 1)
+          }
+          this.updateFormFields()
         }
-        this.updateFormFields()
+        if (this.newsletters[this.selected_newsletter].articles.length == 0) {
+          this.resetFormFields()
+        }
       },
       updateFormFields() {
         if (this.newsletters[this.selected_newsletter].articles.length > 0) {
