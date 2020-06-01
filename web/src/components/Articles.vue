@@ -209,7 +209,7 @@
         this.updateFormFields()
       },
       updateFormFields() {
-        if (this.newsletters.length > 0 && this.newsletters[this.selected_newsletter].articles.length > 0) {
+        if (this.newsletters[this.selected_newsletter].articles.length > 0) {
           this.form.url = this.newsletters[this.selected_newsletter].articles[this.selected_article].url
           this.form.author = this.newsletters[this.selected_newsletter].articles[this.selected_article].author
           this.form.description = this.newsletters[this.selected_newsletter].articles[this.selected_article].description
@@ -221,6 +221,6 @@
     },
     mounted() {
       this.updateFormFields()
-    },
+    }
   }
 </script>
