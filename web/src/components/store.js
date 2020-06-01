@@ -63,7 +63,7 @@ export const store = Vue.observable({
             articles: []
         }
     },
-    selected_newsletter: 1,
+    selected_newsletter: 0,
     selected_article: 0,
     newsletter_markup: "",
     newsletter_markup_updated: "never"

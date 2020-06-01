@@ -86,7 +86,7 @@
       newsletters() {
         return store.newsletters;
       },
-      selected_newsletter() {
+      selected_issue_number() {
         return store.selected_newsletter;
       }
     },
@@ -106,10 +106,10 @@
       setArticle: mutations.setArticle,
       onSubmit(evt) {
         evt.preventDefault()
-        this.newsletters[this.selected_newsletter].version = this.form.version
-        this.newsletters[this.selected_newsletter].date = this.form.date
-        this.newsletters[this.selected_newsletter].intro = this.form.intro
-        alert("Issue #" + this.selected_newsletter + " successfully updated")
+        this.newsletters[this.selected_issue_number].version = this.form.version
+        this.newsletters[this.selected_issue_number].date = this.form.date
+        this.newsletters[this.selected_issue_number].intro = this.form.intro
+        alert("Issue #" + this.selected_issue_number + " successfully updated")
       },
       newNewsletter(evt) {
         evt.preventDefault()
@@ -125,7 +125,7 @@
             articles: []
         }
         alert("Successfully created Issue #" + next_issue_number)
-        this.selected_newsletter = next_issue_number
+        this.setNewsletter(next_issue_number)
         // Reset our form values
         this.form.issue_number = next_issue_number
         this.form.version = null
@@ -137,16 +137,22 @@
           this.show = true
         })
       },
+      updateFormFields() {
+        this.form.issue_number = this.selected_issue_number
+        this.form.version = this.newsletters[this.selected_issue_number].version
+        this.form.date = this.newsletters[this.selected_issue_number].date
+        this.form.intro = this.newsletters[this.selected_issue_number].intro
+      },
       newsletterSelected(evt) {
         evt.preventDefault()
         var issue_number = evt.target.text.split("#")[1]
         this.setNewsletter(issue_number)
         this.setArticle(0)
-        this.form.issue_number = issue_number
-        this.form.version = this.newsletters[issue_number].version
-        this.form.date = this.newsletters[issue_number].date
-        this.form.intro = this.newsletters[issue_number].intro
+        this.updateFormFields()
       }
+    },
+    mounted() {
+      this.updateFormFields()
     }
   }
 </script>
