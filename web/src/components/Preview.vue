@@ -40,7 +40,7 @@
         return store.newsletter_markup;
       },
       last_updated() {
-        return store.newsletter_markup_updated;
+        return "Last updated: " + store.newsletter_markup_updated;
       }
     },
     methods: {
@@ -53,7 +53,7 @@
       },
       updateLastUpdated() {
         var local_time = new Date().toLocaleTimeString()
-        this.setNewsletterMarkupLastUpdated("Last updated: " + local_time)
+        this.setNewsletterMarkupLastUpdated(local_time)
       }
     }
   }
