@@ -4,7 +4,8 @@
       <b-container class="bv-example-row">
           <b-row>
               <b-col>
-                <b-button variant="outline-primary" @click="importData">Import Data</b-button>
+                <input type="file" ref="fileInput" style="display: none" v-on:change="importData(this)">
+                <b-button variant="outline-primary" @click="$refs.fileInput.click()">Import Data</b-button>
               </b-col>
               <b-col> 
                 <b-button variant="outline-primary" @click="exportData">Export Data</b-button>
@@ -57,6 +58,7 @@
     methods: {
       setNewsletterMarkup: mutations.setNewsletterMarkup,
       setNewsletterMarkupLastUpdated: mutations.setNewsletterMarkupLastUpdated,
+      updateNewsletterData: mutations.updateNewsletterData,
       updateLastUpdated() {
         var local_time = new Date().toLocaleTimeString()
         this.setNewsletterMarkupLastUpdated(local_time)
@@ -65,9 +67,6 @@
         evt.preventDefault()
         this.setNewsletterMarkup(JSON.stringify(this.newsletters))
         this.updateLastUpdated()
-      },
-      importData(evt) {
-        evt.preventDefault()
       },
       downloadJsonFile(json, name) {
         const a = document.createElement('a');
@@ -81,6 +80,14 @@
         var exported_data = JSON.stringify(this.newsletters)
         var exported_filename =  "newsletter-data-" + Date.now() + ".json"
         this.downloadJsonFile(exported_data, exported_filename)
+      },
+      importData() {
+        var input_file = this.$refs.fileInput.files[0]
+        var reader = new FileReader();
+        reader.onload = (event) => {
+          this.updateNewsletterData(JSON.parse(event.target.result))
+        }
+        reader.readAsText(input_file)
       }
     }
   }
