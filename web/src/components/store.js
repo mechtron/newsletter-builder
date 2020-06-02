@@ -1,7 +1,23 @@
 import Vue from "vue";
 
 export const store = Vue.observable({
-    newsletters: {},
+    newsletters: {
+        0: {
+            version: "1.1.0",
+            date: "2020-04-15",
+            intro: "Welcome to issue #0",
+            articles: [
+                {
+                    url: "https://google.com",
+                    author: "Test Author",
+                    description: "Example description",
+                    image_url: "",
+                    category: "DevOps",
+                    top_cream: true
+                }
+            ]
+        }
+    },
     selected_newsletter: 0,
     selected_article: 0,
     newsletter_markup: "",
