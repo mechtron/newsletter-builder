@@ -47,6 +47,15 @@
                             </b-input-group>
                         </b-form-group>
 
+                        <b-form-group id="input-group-2" label="Title:" label-for="input-2">
+                            <b-form-input
+                            id="input-2"
+                            v-model="form.title"
+                            type="text"
+                            placeholder="Article title"
+                            ></b-form-input>
+                        </b-form-group>
+
                         <b-form-group id="input-group-2" label="Author:" label-for="input-2">
                             <b-form-input
                             id="input-2"
@@ -121,6 +130,7 @@
         show: true,
         form: {
           url: null,
+          title: null,
           author: null,
           description: null,
           image_url: null,
@@ -149,6 +159,7 @@
       saveArticle(evt) {
         evt.preventDefault()
         this.newsletters[this.selected_newsletter].articles[this.selected_article].url = this.form.url
+        this.newsletters[this.selected_newsletter].articles[this.selected_article].title = this.form.title
         this.newsletters[this.selected_newsletter].articles[this.selected_article].author = this.form.author
         this.newsletters[this.selected_newsletter].articles[this.selected_article].description = this.form.description
         this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url = this.form.image_url
@@ -158,6 +169,7 @@
       },
       resetFormFields() {
         this.form.url = null
+        this.form.title = null
         this.form.author = null
         this.form.description = null
         this.form.image_url = null
@@ -194,6 +206,7 @@
       newArticle() {
         this.newsletters[this.selected_newsletter].articles.push({
             url: null,
+            title: null,
             author: null,
             description: null,
             image_url: null,
@@ -219,6 +232,7 @@
       updateFormFields() {
         if (typeof this.newsletters[this.selected_newsletter].articles[this.selected_article] !== 'undefined') {
           this.form.url = this.newsletters[this.selected_newsletter].articles[this.selected_article].url
+          this.form.title = this.newsletters[this.selected_newsletter].articles[this.selected_article].title
           this.form.author = this.newsletters[this.selected_newsletter].articles[this.selected_article].author
           this.form.description = this.newsletters[this.selected_newsletter].articles[this.selected_article].description
           this.form.image_url = this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url

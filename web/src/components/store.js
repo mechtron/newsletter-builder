@@ -9,6 +9,7 @@ export const store = Vue.observable({
             articles: [
                 {
                     url: "https://google.com",
+                    title: "Test title",
                     author: "Test Author",
                     description: "Example description",
                     image_url: "",
