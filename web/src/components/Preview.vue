@@ -25,7 +25,7 @@
               v-model="newsletterMarkup"
               placeholder="Hit the Generate button!"
               rows="10"
-              max-rows="16"
+              max-rows="30"
             ></b-form-textarea>
           </b-col>
           <b-col col lg="1"></b-col>
