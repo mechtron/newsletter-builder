@@ -15,6 +15,11 @@
                   Generate <b-icon icon="play-fill"></b-icon>
                   </b-button>
               </b-col>
+              <b-col>
+                  <b-button id="download-button" variant="outline-success" @click="downloadNewsletter">
+                  Download <b-icon icon="download"></b-icon>
+                  </b-button>
+              </b-col>
           </b-row>
       </b-container>
       <b-row class="justify-content-md-center">
@@ -75,9 +80,9 @@
         this.setNewsletterMarkup(newsletter_markdown)
         this.updateLastUpdated()
       },
-      downloadJsonFile(json, name) {
+      downloadFile(json, name, type) {
         const a = document.createElement('a');
-        a.href = URL.createObjectURL(new Blob([json], { type: "text/json" }));
+        a.href = URL.createObjectURL(new Blob([json], { type: type }));
         a.download = name;
         a.click();
       },
@@ -86,7 +91,7 @@
         this.generateNewsletter(evt)
         var exported_data = JSON.stringify(this.newsletters)
         var exported_filename =  "newsletter-data-" + Date.now() + ".json"
-        this.downloadJsonFile(exported_data, exported_filename)
+        this.downloadFile(exported_data, exported_filename, "text/json")
       },
       importData() {
         var input_file = this.$refs.fileInput.files[0]
@@ -139,6 +144,12 @@ ${articles}
 *Article version: ${this.newsletters[this.selected_newsletter].version}*
 `;
         return newsletter_markdown
+      },
+      downloadNewsletter(evt) {
+        evt.preventDefault()
+        var newsletter_markdown = this.generateNewsletterMarkdown()
+        var exported_filename = `${this.newsletters[this.selected_newsletter].date}-DevOps-Industry-Updates-${this.selected_newsletter}.md`
+        this.downloadFile(newsletter_markdown, exported_filename, "text/markdown")
       }
     }
   }
