@@ -13,7 +13,7 @@ export const store = Vue.observable({
                     author: "Test Author",
                     description: "Example description",
                     image_url: "",
-                    category: "DevOps",
+                    category: "📟 DevOps",
                     top_cream: true
                 }
             ]
@@ -21,6 +21,22 @@ export const store = Vue.observable({
     },
     selected_newsletter: 0,
     selected_article: 0,
+    article_categories: [
+        { text: 'Select One', value: null },
+        '🌎 Society',
+        '📟 DevOps',
+        '🛠️ DevOps Tools',
+        '☸️ Kubernetes',
+        '🔐 Security',
+        '💻 Programming',
+        '🐧 Linux',
+        '🔩 Hardware',
+        '🚢 Leadership',
+        '☁️ Cloud',
+        'AWS',
+        'Azure',
+        'GCP'
+    ],
     newsletter_markup: "",
     newsletter_markup_updated: "never"
 });

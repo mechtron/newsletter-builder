@@ -123,6 +123,9 @@
       },
       selected_article() {
         return store.selected_article;
+      },
+      categories() {
+        return store.article_categories;
       }
     },
     data() {
@@ -136,23 +139,7 @@
           image_url: null,
           category: null,
           top_cream: false
-        },
-        categories: [
-            { text: 'Select One', value: null },
-            '🌎 Society',
-            '📟 DevOps',
-            '🛠️ DevOps Tools',
-            '☸️ Kubernetes',
-            '🔐 Security',
-            '💻 Programming',
-            '🐧 Linux',
-            '🔩 Hardware',
-            '🚢 Leadership',
-            '☁️ Cloud',
-            'AWS',
-            'Azure',
-            'GCP'
-        ]
+        }
       }
     },
     methods: {
