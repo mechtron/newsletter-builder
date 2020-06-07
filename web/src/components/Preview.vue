@@ -59,8 +59,13 @@
       selected_newsletter() {
         return store.selected_newsletter;
       },
-      newsletterMarkup() {
-        return store.newsletter_markup;
+      newsletterMarkup: {
+        get: function () {
+          return store.newsletter_markup
+        },
+        set: function (newValue) {
+          mutations.setNewsletterMarkup(newValue)
+        },
       },
       last_updated() {
         return "Last updated: " + store.newsletter_markup_updated;
