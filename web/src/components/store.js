@@ -29,6 +29,7 @@ export const store = Vue.observable({
         '☸️ Kubernetes',
         '🔐 Security',
         '💻 Programming',
+        '📖 Machine Learning',
         '🐧 Linux',
         '🔩 Hardware',
         '🚢 Leadership',
