@@ -70,6 +70,7 @@
                             id="input-3"
                             v-model="form.description"
                             placeholder="Short description"
+                            max-rows="3"
                             ></b-form-textarea>
                         </b-form-group>
 
