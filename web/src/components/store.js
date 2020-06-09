@@ -12,7 +12,7 @@ export const store = Vue.observable({
                     title: "Test title",
                     author: "Test Author",
                     description: "Example description",
-                    image_url: "",
+                    image_url: null,
                     category: "📟 DevOps",
                     top_cream: true
                 }
