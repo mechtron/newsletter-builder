@@ -57,7 +57,6 @@ export const mutations = {
     },
     updateNewsletterData(newsletters) {
         store.newsletters = newsletters;
-        store.selected_newsletter = 0;
         store.selected_article = 0;
         store.newsletter_markup = "";
         store.newsletter_markup_updated = "never";
