@@ -3,7 +3,7 @@
         <b-container class="bv-example-row">
             <b-row>
                 <b-col cols="6">
-                    <b-dropdown id="dropdown-1" text="Select Newsletter " class="m-md-2">
+                    <b-dropdown text="Select Newsletter " class="m-md-2">
                         <b-dropdown-item @click="newsletterSelected" v-for="(key, n) in newsletters" :key="n">Issue #{{n}}</b-dropdown-item>
                     </b-dropdown>
                 </b-col>
@@ -23,11 +23,10 @@
                 <b-col cols="10">
                     <b-form @submit="onSubmit" v-if="show">
 
-                        <b-form-group
-                        id="input-group-1" label-for="input-1">
+                        <b-form-group label-for="input-issue-number">
                             <b-input-group readonly prepend="Issue #" class="mt-3">
                                 <b-form-input
-                                id="input-1"
+                                id="input-issue-number"
                                 v-model="form.issue_number"
                                 type="number"
                                 required
@@ -36,10 +35,10 @@
                             </b-input-group>
                         </b-form-group>
 
-                        <b-form-group id="input-group-2" label-for="input-4">
+                        <b-form-group label-for="input-version">
                             <b-input-group prepend="Version" class="mt-3">
                                 <b-form-input
-                                id="input-2"
+                                id="input-version"
                                 v-model="form.version"
                                 type="text"
                                 >
@@ -47,10 +46,10 @@
                             </b-input-group>
                         </b-form-group>
 
-                        <b-form-group id="input-group-3" label-for="input-3">
+                        <b-form-group label-for="input-date">
                             <b-input-group prepend="Date" class="mt-3">
                                 <b-form-input
-                                id="input-3"
+                                id="input-date"
                                 v-model="form.date"
                                 type="date"
                                 >
@@ -58,9 +57,9 @@
                             </b-input-group>
                         </b-form-group>
 
-                        <b-form-group id="input-group-4" label="Intro paragraph:" label-for="input-4">
+                        <b-form-group label="Intro paragraph:" label-for="input-intro">
                             <b-form-textarea
-                                id="textarea"
+                                id="input-intro"
                                 v-model="form.intro"
                                 placeholder="Say something thought provoking.."
                                 rows="5"

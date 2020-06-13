@@ -16,7 +16,7 @@
                   </b-button>
               </b-col>
               <b-col>
-                  <b-button id="download-button" variant="outline-success" @click="downloadNewsletter">
+                  <b-button variant="outline-success" @click="downloadNewsletter">
                   Download <b-icon icon="download"></b-icon>
                   </b-button>
               </b-col>
@@ -26,7 +26,6 @@
           <b-col col lg="1"></b-col>
           <b-col cols="12">
             <b-form-textarea
-              id="textarea"
               v-model="newsletterMarkup"
               placeholder="Hit the Generate button!"
               rows="10"
