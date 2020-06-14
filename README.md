@@ -8,7 +8,7 @@ VueJS app I created to make writing my newsletter ([corey.tech DevOps Industry U
 
 ## Production environment
 
-([corey.tech Newsletter Generator](http://newsletter-generator.s3-website-us-east-1.amazonaws.com/))
+[corey.tech Newsletter Builder](http://newsletter-builder.s3-website-us-east-1.amazonaws.com/)
 
 ## Features
 
