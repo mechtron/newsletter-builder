@@ -15,8 +15,7 @@ import NavTabs from './components/NavTabs.vue'
 export default {
   name: 'App',
   components: {
-    NavTabs,
-    Keypress: () => import('vue-keypress')
+    NavTabs
   }
 }
 </script>
