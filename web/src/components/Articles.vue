@@ -108,6 +108,7 @@
                                   <b-button type="reset" variant="warning">Reset</b-button>
                                   <b-button type="submit" variant="primary">Save</b-button>
                                 </b-button-group>
+                                <br/>
                                 <b-button id="delete-button" variant="danger" @click="deleteArticle"><b-icon icon="trash"></b-icon></b-button>
                                 <Keypress
                                   v-for="keypressEvent in keypressEvents"
