@@ -16,6 +16,7 @@ export default {
   name: 'App',
   components: {
     NavTabs,
+    Keypress: () => import('vue-keypress')
   }
 }
 </script>

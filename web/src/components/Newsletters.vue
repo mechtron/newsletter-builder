@@ -1,9 +1,9 @@
 <template>
-    <div>  
+    <div>
         <b-container class="bv-example-row">
             <b-row>
                 <b-col cols="6">
-                    <b-dropdown text="Select Newsletter " class="m-md-2">
+                    <b-dropdown text="Select Newsletter ">
                         <b-dropdown-item @click="newsletterSelected" v-for="(key, n) in newsletters" :key="n">Issue #{{n}}</b-dropdown-item>
                     </b-dropdown>
                 </b-col>
@@ -67,10 +67,37 @@
                             ></b-form-textarea>
                         </b-form-group>
 
-                        <b-button-group class="mx-1">
-                        <b-button type="submit" variant="primary">Save</b-button>
-                        </b-button-group>
+                        <b-container class="bv-example-row">
+                            <b-row>
+                                <b-col cols="5">
+                                </b-col>
+                                <b-col cols="2">
+                                  <b-button-group>
+                                    <b-button type="submit" variant="primary">Save</b-button>
+                                    <Keypress
+                                      v-for="keypressEvent in keypressEvents"
+                                      :key="keypressEvent.id"
+                                      :key-event="keypressEvent.keyEvent"
+                                      :multiple-keys="keypressEvent.multipleKeys"
+                                      @success="saveNewsletter"
+                                    />
+                                  </b-button-group>
+                                </b-col>
+                                <b-col cols="5">
+                                  <b-alert
+                                    :show="dismissCountDown"
+                                    fade
+                                    variant="success"
+                                    @dismiss-count-down="countDownChanged"
+                                    >
+                                    Issue #{{ selected_issue_number }} updated
+                                  </b-alert>
+                                </b-col>
+                            </b-row>
+                        </b-container>
+
                     </b-form>
+
                 </b-col>
                 <b-col col lg="1"></b-col>
             </b-row>
@@ -81,6 +108,9 @@
 <script>
   import { store, mutations } from "./store";
   export default {
+    components: {
+      Keypress: () => import('vue-keypress')
+    },
     computed: {
       newsletters() {
         return store.newsletters;
@@ -97,7 +127,23 @@
           date: null,
           intro: null
         },
-        show: true
+        show: true,
+        showSuccess: false,
+        dismissSecs: 2,
+        dismissCountDown: 0,
+        showDismissibleAlert: false,
+        keypressEvents: [
+          {
+            keyEvent: 'keydown',
+            multipleKeys: [
+              {
+                keyCode: 90, // Z
+                modifiers: ['metaKey'],
+                preventDefault: true,
+              },
+            ],
+          }
+        ]
       }
     },
     methods: {
@@ -105,10 +151,13 @@
       setArticle: mutations.setArticle,
       onSubmit(evt) {
         evt.preventDefault()
+        this.saveNewsletter()
+      },
+      saveNewsletter() {
         this.newsletters[this.selected_issue_number].version = this.form.version
         this.newsletters[this.selected_issue_number].date = this.form.date
         this.newsletters[this.selected_issue_number].intro = this.form.intro
-        alert("Issue #" + this.selected_issue_number + " successfully updated")
+        this.showAlert()
       },
       newNewsletter(evt) {
         evt.preventDefault()
@@ -148,6 +197,12 @@
         this.setNewsletter(issue_number)
         this.setArticle(0)
         this.updateFormFields()
+      },
+      countDownChanged(dismissCountDown) {
+        this.dismissCountDown = dismissCountDown
+      },
+      showAlert() {
+        this.dismissCountDown = this.dismissSecs
       }
     },
     mounted() {
