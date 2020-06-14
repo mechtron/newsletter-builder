@@ -71,20 +71,20 @@
                             ></b-form-textarea>
                         </b-form-group>
 
-                        <b-form-group label="Image URL:" label-for="input-image-url">
-                            <b-form-input
-                              id="input-image-url"
-                              v-model="form.image_url"
-                              placeholder="Image URL (optional)"
-                            ></b-form-input>
-                        </b-form-group>
-
                         <b-form-group label="Category:" label-for="input-category">
                             <b-form-select
                               id="input-category"
                               v-model="form.category"
                               :options="categories"
                             ></b-form-select>
+                        </b-form-group>
+
+                        <b-form-group label="Image URL:" label-for="input-image-url">
+                            <b-form-input
+                              id="input-image-url"
+                              v-model="form.image_url"
+                              placeholder="Image URL (optional)"
+                            ></b-form-input>
                         </b-form-group>
 
                         <b-form-group>
