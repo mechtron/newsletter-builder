@@ -128,10 +128,8 @@
           intro: null
         },
         show: true,
-        showSuccess: false,
         dismissSecs: 2,
         dismissCountDown: 0,
-        showDismissibleAlert: false,
         keypressEvents: [
           {
             keyEvent: 'keydown',
@@ -139,7 +137,7 @@
               {
                 keyCode: 90, // Z
                 modifiers: ['metaKey'],
-                preventDefault: true,
+                preventDefault: false,
               },
             ],
           }
