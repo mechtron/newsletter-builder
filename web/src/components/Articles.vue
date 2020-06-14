@@ -189,7 +189,7 @@
             multipleKeys: [
               {
                 keyCode: 90, // Z
-                modifiers: ['metaKey'],
+                modifiers: ['shiftKey'],
                 preventDefault: false,
               },
             ],
