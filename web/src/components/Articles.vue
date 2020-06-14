@@ -87,6 +87,14 @@
                             ></b-form-input>
                         </b-form-group>
 
+                        <b-form-group label="Image filename:" label-for="input-image-filename">
+                            <b-form-input
+                              id="input-image-filename"
+                              v-model="form.image_filename"
+                              placeholder="Image filename (optional)"
+                            ></b-form-input>
+                        </b-form-group>
+
                         <b-form-group>
                             <b-form-checkbox v-model="form.top_cream">Top cream?</b-form-checkbox>
                         </b-form-group>
@@ -168,6 +176,7 @@
           author: null,
           description: null,
           image_url: null,
+          image_filename: null,
           category: null,
           top_cream: false
         },
@@ -199,8 +208,9 @@
         this.newsletters[this.selected_newsletter].articles[this.selected_article].title = this.form.title
         this.newsletters[this.selected_newsletter].articles[this.selected_article].author = this.form.author
         this.newsletters[this.selected_newsletter].articles[this.selected_article].description = this.form.description
-        this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url = this.form.image_url
         this.newsletters[this.selected_newsletter].articles[this.selected_article].category = this.form.category
+        this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url = this.form.image_url
+        this.newsletters[this.selected_newsletter].articles[this.selected_article].image_filename = this.form.image_filename
         this.newsletters[this.selected_newsletter].articles[this.selected_article].top_cream = this.form.top_cream
         this.showAlert()
       },
@@ -209,8 +219,9 @@
         this.form.title = null
         this.form.author = null
         this.form.description = null
-        this.form.image_url = null
         this.form.category = null
+        this.form.image_url = null
+        this.form.image_filename = null
         this.form.top_cream = false
       },
       onReset(evt) {
@@ -246,8 +257,9 @@
             title: null,
             author: null,
             description: null,
-            image_url: null,
             category: null,
+            image_url: null,
+            image_filename: null,
             top_cream: false
         })
         this.changeArticle('last')
@@ -272,8 +284,9 @@
           this.form.title = this.newsletters[this.selected_newsletter].articles[this.selected_article].title
           this.form.author = this.newsletters[this.selected_newsletter].articles[this.selected_article].author
           this.form.description = this.newsletters[this.selected_newsletter].articles[this.selected_article].description
-          this.form.image_url = this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url
           this.form.category = this.newsletters[this.selected_newsletter].articles[this.selected_article].category
+          this.form.image_url = this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url
+          this.form.image_filename = this.newsletters[this.selected_newsletter].articles[this.selected_article].image_filename
           this.form.top_cream = this.newsletters[this.selected_newsletter].articles[this.selected_article].top_cream
         }
       },

@@ -124,8 +124,11 @@
             if (newsletter_articles[k].category == this.article_categories[j]) {
               if (newsletter_articles[k].image_url != null) {
                 var image_filename = newsletter_articles[k].image_url.split("/").pop()
-                articles += `<p align="center"><img src="{{ site.url }}/images/diu-${this.selected_newsletter}/${image_filename}" width="600"></p>\n`
+                if (newsletter_articles[k].image_filename !=(null || "")) {
+                  image_filename = newsletter_articles[k].image_filename
+                }
                 articles += `<p align="center"><img src="${newsletter_articles[k].image_url}" width="600"></p>\n`
+                articles += `<!-- <p align="center"><img src="{{ site.url }}/images/diu-${this.selected_newsletter}/${image_filename}" width="600"></p> -->\n`
               }
               articles += `- [${newsletter_articles[k].title}](${newsletter_articles[k].url}){:target="_blank"}`
               if (newsletter_articles[k].author != null) {
