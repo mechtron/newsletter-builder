@@ -2,6 +2,8 @@
 import datetime
 import os
 import json
+import pathlib
+import shutil
 import tempfile
 
 from requests import get
@@ -32,17 +34,22 @@ def download_newsletter_images(newsletter_data, selected_newsletter):
     )
     destination_base_path = "{}/{}".format(tempfile.gettempdir(), destination_dirname)
     os.mkdir(destination_base_path)
-    downloaded_images = []
     for article in newsletter_data[str(selected_newsletter)]["articles"]:
         if "image_url" in article and article["image_url"] not in (None, ""):
-            downloaded_image_path = download_image(
+            download_image(
                 article["image_url"],
                 article["image_filename"],
                 destination_base_path,
             )
-            downloaded_images.append(downloaded_image_path)
     print("Downloaded images are available at:", destination_base_path)
-    return downloaded_images
+    return destination_base_path
+
+
+def zip_newsletter_images(downloaded_images_path):
+    destination_filename = downloaded_images_path.split("/")[-1]
+    destination_path = str(pathlib.Path(__file__).parent) + destination_filename
+    shutil.make_archive(destination_path, 'zip', downloaded_images_path)
+    print("Newsletter image zip:", destination_path)
 
 
 def main():
@@ -52,7 +59,8 @@ def main():
     selected_newsletter = os.environ.get("SELECTED_NEWSLETTER", None)
     if not selected_newsletter:
         selected_newsletter = len(newsletter_data) - 1
-    download_newsletter_images(newsletter_data, selected_newsletter)
+    downloaded_images_path = download_newsletter_images(newsletter_data, selected_newsletter)
+    zip_newsletter_images(downloaded_images_path)
 
 
 if __name__ == "__main__":
