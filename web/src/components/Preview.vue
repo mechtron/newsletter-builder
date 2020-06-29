@@ -46,6 +46,7 @@
 </style>
 
 <script>
+  var JSZip = require("jszip");
   import { store, mutations } from "./store";
   export default {
     computed: {
@@ -159,6 +160,16 @@ ${articles}
       },
       downloadNewsletter(evt) {
         evt.preventDefault()
+
+        var zip = new JSZip();
+        zip.file("Hello.txt", "Hello World\n");
+        var img = zip.folder("images");
+        img.file("test.png", "a123", {base64: true});
+        zip.generateAsync({type:"blob"}).then(function(content) {
+            console.log(content)
+            // this.downloadFile(content, "images.zip", "application/zip")
+        });
+
         var newsletter_markdown = this.generateNewsletterMarkdown()
         var exported_filename = `${this.newsletters[this.selected_newsletter].date}-DevOps-Industry-Updates-${this.selected_newsletter}.md`
         this.downloadFile(newsletter_markdown, exported_filename, "text/markdown")
