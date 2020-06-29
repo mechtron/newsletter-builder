@@ -52,6 +52,11 @@ def zip_newsletter_images(downloaded_images_path):
     print("Newsletter image zip:", destination_path)
 
 
+def delete_temporary_folder(downloaded_images_path):
+    shutil.rmtree(downloaded_images_path)
+    print("Successfully cleaned-up", downloaded_images_path)
+
+
 def main():
     json_file_path = os.environ.get("JSON_DATA_PATH")
     print("Attempting to load JSON file from ", json_file_path)
@@ -61,6 +66,7 @@ def main():
         selected_newsletter = len(newsletter_data) - 1
     downloaded_images_path = download_newsletter_images(newsletter_data, selected_newsletter)
     zip_newsletter_images(downloaded_images_path)
+    delete_temporary_folder(downloaded_images_path)
 
 
 if __name__ == "__main__":
