@@ -4,6 +4,7 @@ import click
 from flask import current_app, g
 from flask.cli import with_appcontext
 
+
 def get_db():
     if "db" not in g:
         g.db = sqlite3.connect(
@@ -21,9 +22,16 @@ def close_db(e=None):
 
 def init_db():
     db = get_db()
-
-    with current_app.open_resource("schema.sql") as f:
-        db.executescript(f.read().decode("utf8"))
+    db.executescript(
+        """
+        CREATE TABLE user (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            profile_pic TEXT NOT NULL
+        );
+        """
+    )
 
 @click.command("init-db")
 @with_appcontext
