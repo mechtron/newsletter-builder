@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  api:
+    container_name: newsletter_builder_api
+    build: 
+      context: ./api
+      dockerfile: Dockerfile.alpine
+    restart: always
+    ports:
+     - "8000:8000"
+    volumes:
+     - ./api:/api
+    environment:
+      SECRET_KEY: s3cr3t
+      # GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
+      # GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET}"
+      # MYSQL_HOSTNAME: mysql
+      # MYSQL_USERNAME: root
+      # MYSQL_PASSWORD: password
+    # depends_on:
+    #   - mysql
+
+  # mysql:
+  #   container_name: newsletter_builder_db
+  #   image: mysql
+  #   ports:
+  #    - "3306:3306"
+  #   volumes:
+  #    - ./db-data:/var/lib/mysql
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: password
+
+  web:
+    container_name: newsletter_builder_web
+    build:
+      context: ./web
+    restart: always
+    ports:
+     - "80:80"
+    depends_on:
+      - api
