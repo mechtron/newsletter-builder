@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - master
+    - api-mvp
 jobs:
   build_and_deploy_job:
     name: Build and deploy
@@ -10,13 +11,27 @@ jobs:
     steps:
     - name: Checkout this repo
       uses: actions/checkout@v2
+    - name: Build API Docker image
+      uses: docker/build-push-action@v1
+      with:
+        path: ./api/
+        dockerfile: ./api/Dockerfile.alpine
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: mechtron/newsletter-generator-api
+        tags: latest
+        tag_with_ref: true
+        # push: ${{ startsWith(github.ref, 'refs/tags/') }}
+    # - name: Build Web Docker image
     - name: Setup node
       uses: actions/setup-node@v1
       with:
         node-version: "9.x"
-    - run: cd web && npm install
-    - run: cd web && npm run build
-    - name: Sync to S3 bucket
+    - name: Web install Node packages
+      run: cd web && npm install
+    - name: Web build
+      run: cd web && npm run build
+    - name: Sync Web to S3 bucket
       uses: jakejarvis/s3-sync-action@v0.5.1
       with:
         args: --delete
