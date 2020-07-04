@@ -1,19 +1,32 @@
 import json
 import os
+from pathlib import Path
 
-from flask import Flask, redirect, request, url_for
+from flask import Flask, send_file, redirect, request, url_for
+
 import requests
+
+from newsletter_images import (
+    download_newsletter_images,
+    zip_newsletter_images,
+    delete_temporary_folder,
+)
 
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(24)
 
 
-@app.route("/generate-newsletter")
-def login():
-    return """
-    {"status": "hi!"}
-    """
+@app.route("/generate-newsletter", methods=["POST"])
+def generate_newsletter():
+    request_data = json.loads(request.data)
+    downloaded_images_path = download_newsletter_images(
+        request_data["newsletter_data"],
+        request_data["newsletter_id"],
+    )
+    zip_path = zip_newsletter_images(downloaded_images_path)
+    delete_temporary_folder(downloaded_images_path)
+    zip_file_name = Path(zip_path).name
+    return send_file(zip_path, attachment_filename=zip_file_name)
 
 
 if __name__ == "__main__":
