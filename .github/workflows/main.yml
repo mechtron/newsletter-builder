@@ -4,6 +4,9 @@ on:
     branches:
     - master
     - api-mvp
+  create:
+    tags:
+      - "*"
 jobs:
   build_and_deploy_job:
     name: Build and deploy
