@@ -27,14 +27,14 @@ def download_image(image_url, image_filename, destination_base_path):
     return destination_path
 
 
-def download_newsletter_images(newsletter_data, selected_newsletter):
-    destination_dirname = "newsletter_{selected_newsletter}_images_{timestamp}".format(
-        selected_newsletter=selected_newsletter,
+def download_newsletter_images(newsletter_data, newsletter_id):
+    destination_dirname = "newsletter_{newsletter_id}_images_{timestamp}".format(
+        newsletter_id=newsletter_id,
         timestamp=datetime.datetime.now().timestamp(),
     )
     destination_base_path = "{}/{}".format(tempfile.gettempdir(), destination_dirname)
     os.mkdir(destination_base_path)
-    for article in newsletter_data[str(selected_newsletter)]["articles"]:
+    for article in newsletter_data["articles"]:
         if "image_url" in article and article["image_url"] not in (None, ""):
             download_image(
                 article["image_url"],
@@ -47,9 +47,10 @@ def download_newsletter_images(newsletter_data, selected_newsletter):
 
 def zip_newsletter_images(downloaded_images_path):
     destination_filename = downloaded_images_path.split("/")[-1]
-    destination_path = str(pathlib.Path(__file__).parent) + destination_filename
-    shutil.make_archive(destination_path, 'zip', downloaded_images_path)
-    print("Newsletter image zip:", destination_path)
+    destination_path = str(pathlib.Path(__file__).parent) + "/" + destination_filename
+    shutil.make_archive(destination_path, "zip", downloaded_images_path)
+    print("Newsletter image zip:", destination_path + ".zip")
+    return destination_path + ".zip"
 
 
 def delete_temporary_folder(downloaded_images_path):
@@ -64,7 +65,10 @@ def main():
     selected_newsletter = os.environ.get("SELECTED_NEWSLETTER", None)
     if not selected_newsletter:
         selected_newsletter = len(newsletter_data) - 1
-    downloaded_images_path = download_newsletter_images(newsletter_data, selected_newsletter)
+    downloaded_images_path = download_newsletter_images(
+        newsletter_data[selected_newsletter],
+        selected_newsletter,
+    )
     zip_newsletter_images(downloaded_images_path)
     delete_temporary_folder(downloaded_images_path)
 
