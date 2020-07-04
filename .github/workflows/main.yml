@@ -22,7 +22,17 @@ jobs:
         tags: latest
         tag_with_ref: true
         # push: ${{ startsWith(github.ref, 'refs/tags/') }}
-    # - name: Build Web Docker image
+    - name: Build Web Docker image
+      uses: docker/build-push-action@v1
+      with:
+        path: ./web/
+        dockerfile: ./web/Dockerfile
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: mechtron/newsletter-generator-web
+        tags: latest
+        tag_with_ref: true
+        # push: ${{ startsWith(github.ref, 'refs/tags/') }}
     - name: Setup node
       uses: actions/setup-node@v1
       with:
