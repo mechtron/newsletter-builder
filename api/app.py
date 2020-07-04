@@ -2,9 +2,7 @@ import json
 import os
 from pathlib import Path
 
-from flask import Flask, send_file, redirect, request, url_for
-
-import requests
+from flask import Flask, send_file, request
 
 from newsletter_images import (
     download_newsletter_images,
