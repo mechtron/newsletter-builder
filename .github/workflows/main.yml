@@ -19,7 +19,6 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: mechtron/newsletter-generator-api
-        tags: latest
         tag_with_ref: true
     - name: Build Web Docker image
       uses: docker/build-push-action@v1
@@ -29,7 +28,6 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: mechtron/newsletter-generator-web
-        tags: latest
         tag_with_ref: true
     - name: Setup node
       uses: actions/setup-node@v1
