@@ -3,18 +3,16 @@ version: '3'
 services:
   api:
     container_name: newsletter_builder_api
-    image: mechtron/newsletter-generator-api:1.2.0
+    image: mechtron/newsletter-generator-api:api-mvp
     restart: always
     ports:
-     - "8000:8000"
-    volumes:
-     - ./api:/api
+     - "8002:8000"
 
   web:
     container_name: newsletter_builder_web
-    image: mechtron/newsletter-generator-api:1.2.0
+    image: mechtron/newsletter-generator-web:api-mvp
     restart: always
     ports:
-     - "8080:80"
+     - "8001:80"
     depends_on:
       - api
