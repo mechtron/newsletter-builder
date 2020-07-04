@@ -46,6 +46,7 @@
 </style>
 
 <script>
+  import axios from 'axios';
   import { store, mutations } from "./store";
   export default {
     computed: {
@@ -157,11 +158,41 @@ ${articles}
 `;
         return newsletter_markdown
       },
+      downloadNewsletterImages() {
+        axios({
+          method: 'post',
+          url: '../api/generate-newsletter',
+          headers: {
+            'Access-Control-Allow-Origin': '*'
+          },
+          crossdomain: true,
+          data: {
+            newsletter_id: this.selected_newsletter,
+            newsletter_data: this.newsletters[this.selected_newsletter],
+          },
+          dataType: "binary",
+          responseType: "blob"
+        })
+        .then(response => {
+          let zip_file = response.data;
+          let blob = new Blob([zip_file], {type: "application/zip"});
+          let link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          // link.download = "test.zip";
+          link.click();
+          console.log("Success");
+        })
+        .catch(error => {
+          console.log('-----error-------')
+          console.log(error)
+        })
+      },
       downloadNewsletter(evt) {
         evt.preventDefault()
         var newsletter_markdown = this.generateNewsletterMarkdown()
         var exported_filename = `${this.newsletters[this.selected_newsletter].date}-DevOps-Industry-Updates-${this.selected_newsletter}.md`
         this.downloadFile(newsletter_markdown, exported_filename, "text/markdown")
+        this.downloadNewsletterImages()
       }
     }
   }

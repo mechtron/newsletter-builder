@@ -24,7 +24,7 @@ def generate_newsletter():
     zip_path = zip_newsletter_images(downloaded_images_path)
     delete_temporary_folder(downloaded_images_path)
     zip_file_name = Path(zip_path).name
-    return send_file(zip_path, attachment_filename=zip_file_name)
+    return send_file(zip_path, as_attachment=True, attachment_filename=zip_file_name)
 
 
 if __name__ == "__main__":
