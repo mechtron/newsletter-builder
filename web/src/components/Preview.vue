@@ -71,6 +71,11 @@
         return "Last updated: " + store.newsletter_markup_updated;
       }
     },
+    data() {
+      return {
+        exported_filename: null
+      }
+    },
     methods: {
       setNewsletterMarkup: mutations.setNewsletterMarkup,
       setNewsletterMarkupLastUpdated: mutations.setNewsletterMarkupLastUpdated,
@@ -85,11 +90,12 @@
         this.setNewsletterMarkup(newsletter_markdown)
         this.updateLastUpdated()
       },
-      downloadFile(json, name, type) {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(new Blob([json], { type: type }));
-        a.download = name;
-        a.click();
+      downloadFile(contents, filename, mimetype) {
+        let link = document.createElement("a");
+        let blob = new Blob([contents], {type: mimetype});
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
       },
       exportData(evt) {
         evt.preventDefault()
@@ -158,10 +164,11 @@ ${articles}
 `;
         return newsletter_markdown
       },
-      downloadNewsletterImages() {
+      downloadNewsletterImages(exported_filename) {
         axios({
           method: 'post',
-          url: '../api/generate-newsletter',
+          url: "../api/generate-newsletter",
+          // url: 'http://localhost/api/generate-newsletter', // For local dev
           headers: {
             'Access-Control-Allow-Origin': '*'
           },
@@ -174,25 +181,19 @@ ${articles}
           responseType: "blob"
         })
         .then(response => {
-          let zip_file = response.data;
-          let blob = new Blob([zip_file], {type: "application/zip"});
-          let link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          // link.download = "test.zip";
-          link.click();
-          console.log("Success");
+          this.downloadFile(response.data, exported_filename, "application/zip");
         })
         .catch(error => {
-          console.log('-----error-------')
-          console.log(error)
+          console.log("Error downloading zip file:");
+          console.log(error);
         })
       },
       downloadNewsletter(evt) {
         evt.preventDefault()
         var newsletter_markdown = this.generateNewsletterMarkdown()
-        var exported_filename = `${this.newsletters[this.selected_newsletter].date}-DevOps-Industry-Updates-${this.selected_newsletter}.md`
-        this.downloadFile(newsletter_markdown, exported_filename, "text/markdown")
-        this.downloadNewsletterImages()
+        this.exported_filename = `${this.newsletters[this.selected_newsletter].date}-DevOps-Industry-Updates-${this.selected_newsletter}`
+        this.downloadFile(newsletter_markdown, `${this.exported_filename}.md`, "text/markdown")
+        this.downloadNewsletterImages(`${this.exported_filename}.zip`)
       }
     }
   }
