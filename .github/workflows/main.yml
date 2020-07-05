@@ -21,7 +21,7 @@ jobs:
         dockerfile: ./api/Dockerfile.alpine
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: mechtron/newsletter-generator-api
+        repository: mechtron/newsletter-builder-api
         tag_with_ref: true
     - name: Build Web Docker image
       uses: docker/build-push-action@v1
@@ -30,7 +30,7 @@ jobs:
         dockerfile: ./web/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: mechtron/newsletter-generator-web
+        repository: mechtron/newsletter-builder-web
         tag_with_ref: true
     - name: Setup node
       uses: actions/setup-node@v1
