@@ -8,13 +8,13 @@ VueJS app I created to make writing my newsletter ([corey.tech DevOps Industry U
 
 ## Production environment
 
-[corey.tech Newsletter Builder](http://newsletter-builder.s3-website-us-east-1.amazonaws.com/)
+[corey.tech Newsletter Builder](http://nb.corey.tech)
 
 ## Features
 
 1. Generation of newsletter markdown
 1. One-click newsletter data import/export
-1. 100% client-side solution (for now)
+1. API with endpoint for zipping article images
 1. VueJS shared state store
 
 ## Screenshot
