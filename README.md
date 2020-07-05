@@ -4,7 +4,7 @@ By Corey Gale (`mechtrondev[at]gmail.com`)
 
 ## Executive summary
 
-VueJS app I created to make writing my newsletter ([corey.tech DevOps Industry Updates](https://corey.tech)) less repetitive.
+App I created to make writing my newsletter ([corey.tech DevOps Industry Updates](https://corey.tech)) less repetitive.
 
 ## Production environment
 
