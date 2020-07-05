@@ -4,11 +4,11 @@ By Corey Gale (`mechtrondev[at]gmail.com`)
 
 ## Executive summary
 
-App I created to make writing my newsletter ([corey.tech DevOps Industry Updates](https://corey.tech)){:target="_blank"} less repetitive.
+VueJS app I created to make writing my newsletter ([corey.tech DevOps Industry Updates](https://corey.tech)) less repetitive.
 
 ## Production environment
 
-[corey.tech Newsletter Builder](http://nb.corey.tech){:target="_blank"}
+[corey.tech Newsletter Builder](http://nb.corey.tech)
 
 ## Features
 
