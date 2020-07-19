@@ -102,6 +102,7 @@
                         <b-container class="bv-example-row">
                             <b-row>
                               <b-col cols="4">
+                                <b-button @click="changeArticleIndex('previous')"><b-icon icon="arrow-bar-left"></b-icon></b-button>
                               </b-col>
                               <b-col cols="4">
                                 <b-button-group class="mx-1">
@@ -119,6 +120,7 @@
                                 />
                               </b-col>
                               <b-col cols="4">
+                                <b-button @click="changeArticleIndex('next')"><b-icon icon="arrow-bar-right"></b-icon></b-button>
                                 <b-alert
                                   :show="dismissCountDown"
                                   fade
@@ -296,6 +298,23 @@
       },
       showAlert() {
         this.dismissCountDown = this.dismissSecs
+      },
+      changeArticleIndex(direction) {
+        if (this.newsletters[this.selected_newsletter].articles.length > 0) {
+          if (direction == "previous" && this.selected_article != 0) {
+            var previous_article = this.newsletters[this.selected_newsletter].articles[this.selected_article - 1]
+            this.newsletters[this.selected_newsletter].articles[this.selected_article - 1] = this.newsletters[this.selected_newsletter].articles[this.selected_article]
+            this.newsletters[this.selected_newsletter].articles[this.selected_article] = previous_article
+            this.changeArticle("previous")
+          } else if (direction == "next" && this.selected_article < this.newsletters[this.selected_newsletter].articles.length - 1) {
+            var next_article = this.newsletters[this.selected_newsletter].articles[this.selected_article + 1]
+            this.newsletters[this.selected_newsletter].articles[this.selected_article + 1] = this.newsletters[this.selected_newsletter].articles[this.selected_article]
+            this.newsletters[this.selected_newsletter].articles[this.selected_article] = next_article
+            this.changeArticle("next")
+          } else {
+            console.log("Unexpecteed direction")
+          }
+        }
       }
     },
     mounted() {
