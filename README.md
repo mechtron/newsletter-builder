@@ -12,10 +12,10 @@ App I created to make writing my newsletter ([corey.tech DevOps Industry Updates
 
 ## Features
 
-1. Generation of newsletter markdown
-1. One-click newsletter data import/export
+1. Wizard to add and edit newsletter articles
+1. Generation and preview of newsletter markdown
 1. API with endpoint for zipping article images
-1. VueJS shared state store
+1. One-click newsletter data import/export
 
 ## Screenshot
 
