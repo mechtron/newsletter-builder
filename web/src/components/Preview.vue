@@ -10,13 +10,13 @@
           <b-button variant="outline-primary" @click="exportData">Export Data</b-button>
         </b-col>
         <b-col>
-            <b-button id="generate-button" variant="success" @click="generateNewsletter">
-            Generate <b-icon icon="play-fill"></b-icon>
+            <b-button variant="outline-success" @click="downloadNewsletter">
+            Download <b-icon icon="download"></b-icon>
             </b-button>
         </b-col>
         <b-col>
-            <b-button variant="outline-success" @click="downloadNewsletter">
-            Download <b-icon icon="download"></b-icon>
+            <b-button id="generate-button" variant="success" @click="generateNewsletter">
+            Generate <b-icon icon="play-fill"></b-icon>
             </b-button>
         </b-col>
       </b-row>
