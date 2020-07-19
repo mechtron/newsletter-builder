@@ -39,6 +39,7 @@ export const store = Vue.observable({
         'Azure',
         'GCP'
     ],
+    newsletter_markdown: "",
     newsletter_markup: "",
     newsletter_markup_updated: "never"
 });
@@ -49,6 +50,9 @@ export const mutations = {
     },
     setArticle(selected_article) {
         store.selected_article = selected_article;
+    },
+    setNewsletterMarkdown(newsletter_markdown) {
+        store.newsletter_markdown = newsletter_markdown;
     },
     setNewsletterMarkup(newsletter_markup) {
         store.newsletter_markup = newsletter_markup;

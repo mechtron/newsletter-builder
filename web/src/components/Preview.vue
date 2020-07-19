@@ -1,40 +1,51 @@
 <template>
   <div>
     <b-container class="bv-example-row">
-      <b-container class="bv-example-row">
-          <b-row>
-              <b-col>
-                <input type="file" ref="fileInput" style="display: none" v-on:change="importData(this)">
-                <b-button variant="outline-primary" @click="$refs.fileInput.click()">Import Data</b-button>
-              </b-col>
-              <b-col> 
-                <b-button variant="outline-primary" @click="exportData">Export Data</b-button>
-              </b-col>
-              <b-col>
-                  <b-button id="generate-button" variant="success" @click="generateNewsletter">
-                  Generate <b-icon icon="play-fill"></b-icon>
-                  </b-button>
-              </b-col>
-              <b-col>
-                  <b-button variant="outline-success" @click="downloadNewsletter">
-                  Download <b-icon icon="download"></b-icon>
-                  </b-button>
-              </b-col>
-          </b-row>
-      </b-container>
-      <b-row class="justify-content-md-center">
-          <b-col col lg="1"></b-col>
-          <b-col cols="12">
-            <b-form-textarea
-              v-model="newsletterMarkup"
-              placeholder="Hit the Generate button!"
-              rows="10"
-              max-rows="30"
-            ></b-form-textarea>
-          </b-col>
-          <b-col col lg="1"></b-col>
+      <b-row>
+        <b-col>
+          <input type="file" ref="fileInput" style="display: none" v-on:change="importData(this)">
+          <b-button variant="outline-primary" @click="$refs.fileInput.click()">Import Data</b-button>
+        </b-col>
+        <b-col> 
+          <b-button variant="outline-primary" @click="exportData">Export Data</b-button>
+        </b-col>
+        <b-col>
+            <b-button id="generate-button" variant="success" @click="generateNewsletter">
+            Generate <b-icon icon="play-fill"></b-icon>
+            </b-button>
+        </b-col>
+        <b-col>
+            <b-button variant="outline-success" @click="downloadNewsletter">
+            Download <b-icon icon="download"></b-icon>
+            </b-button>
+        </b-col>
       </b-row>
     </b-container>
+    <b-tabs content-class="mt-3" justified>
+      <b-tab title="Preview" active>
+        <b-row>
+            <b-col col lg="1"></b-col>
+            <b-col cols="12">
+              <div v-html="newsletterMarkup"></div>
+            </b-col>
+            <b-col col lg="1"></b-col>
+        </b-row>
+      </b-tab>
+      <b-tab title="Jekyll Markdown">
+        <b-row class="justify-content-md-center">
+            <b-col col lg="1"></b-col>
+            <b-col cols="10">
+              <b-form-textarea
+                v-model="newsletterMarkdown"
+                placeholder="Hit the Generate button!"
+                rows="10"
+                max-rows="20"
+              ></b-form-textarea>
+            </b-col>
+            <b-col col lg="1"></b-col>
+        </b-row>
+      </b-tab>
+    </b-tabs>
     <b-card no-body class="mt-3 text-center" :header="last_updated"></b-card>
   </div>
 </template>
@@ -47,6 +58,7 @@
 
 <script>
   import axios from 'axios';
+  import showdown from 'showdown';
   import { store, mutations } from "./store";
   export default {
     computed: {
@@ -67,6 +79,14 @@
           mutations.setNewsletterMarkup(newValue)
         },
       },
+      newsletterMarkdown: {
+        get: function () {
+          return store.newsletter_markdown
+        },
+        set: function (newValue) {
+          mutations.setNewsletterMarkdown(newValue)
+        },
+      },
       last_updated() {
         return "Last updated: " + store.newsletter_markup_updated;
       }
@@ -77,6 +97,7 @@
       }
     },
     methods: {
+      setNewsletterMarkdown: mutations.setNewsletterMarkdown,
       setNewsletterMarkup: mutations.setNewsletterMarkup,
       setNewsletterMarkupLastUpdated: mutations.setNewsletterMarkupLastUpdated,
       updateNewsletterData: mutations.updateNewsletterData,
@@ -86,8 +107,12 @@
       },
       generateNewsletter(evt) {
         evt.preventDefault()
-        var newsletter_markdown = this.generateNewsletterMarkdown()
-        this.setNewsletterMarkup(newsletter_markdown)
+        var newsletter_markdown = this.generateNewsletterMarkdown(false)
+        this.setNewsletterMarkdown(newsletter_markdown)
+        var converter = new showdown.Converter()
+        var newsletter_markdown_preview = this.generateNewsletterMarkdown(true)
+        var newsletter_markdown_html = converter.makeHtml(newsletter_markdown_preview)
+        this.setNewsletterMarkup(newsletter_markdown_html)
         this.updateLastUpdated()
       },
       downloadFile(contents, filename, mimetype) {
@@ -112,7 +137,7 @@
         }
         reader.readAsText(input_file)
       },
-      generateNewsletterMarkdown() {
+      generateNewsletterMarkdown(preview_mode) {
         var newsletter_articles = this.newsletters[this.selected_newsletter].articles
         // Top Cream
         var top_cream = ""
@@ -134,7 +159,11 @@
                 if (newsletter_articles[k].image_filename !=(null || "")) {
                   image_filename = newsletter_articles[k].image_filename
                 }
-                articles += `<p align="center"><img src="{{ site.url }}/images/diu-${this.selected_newsletter}/${image_filename}" width="600"></p>\n`
+                if (preview_mode) {
+                  articles += `<p align="center"><img src="${newsletter_articles[k].image_url}" width="600"></p>\n`
+                } else {
+                  articles += `<p align="center"><img src="{{ site.url }}/images/diu-${this.selected_newsletter}/${image_filename}" width="600"></p>\n`
+                }
               }
               articles += `- [${newsletter_articles[k].title}](${newsletter_articles[k].url}){:target="_blank"}`
               if (newsletter_articles[k].author != null) {
@@ -145,11 +174,20 @@
           }
           articles += `\n`
         }
-        // Put it all together
-        var newsletter_markdown = String.raw`---
+        var newsletter_header_markdown = ""
+        if (preview_mode) {
+          top_cream = top_cream.replace('{:target="_blank"}', '')
+          articles = articles.replace('{:target="_blank"}', '')
+          newsletter_header_markdown = `# DevOps Industry Updates #${this.selected_newsletter}`
+        } else {
+          newsletter_header_markdown = String.raw`---
 layout: post
 title: "DevOps Industry Updates #${this.selected_newsletter}"
----
+---`
+        }
+        // Put it all together
+        var newsletter_markdown = String.raw`
+${newsletter_header_markdown}
 
 ${this.newsletters[this.selected_newsletter].intro}
 
