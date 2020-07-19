@@ -101,11 +101,30 @@
                 </b-col>
                 <b-col col lg="1"></b-col>
             </b-row>
+            <br/>
+            <b-row class="justify-content-md-center">
+                <b-col col lg="1"></b-col>
+                <b-col cols="10">
+                  <b-card title="Data management" sub-title="Import and export JSON data files containing all newsletter data.">
+                    <b-row>
+                      <b-col>
+                        <input type="file" ref="fileInput" style="display: none" v-on:change="importData(this)">
+                        <b-button variant="outline-primary" @click="$refs.fileInput.click()">Import Data</b-button>
+                      </b-col>
+                      <b-col> 
+                        <b-button variant="outline-primary" @click="exportData">Export Data</b-button>
+                      </b-col>
+                    </b-row>
+                  </b-card>
+                </b-col>
+                <b-col col lg="1"></b-col>
+            </b-row>
         </b-container>
     </div>
 </template>
 
 <script>
+  import common from "./common";
   import { store, mutations } from "./store";
   export default {
     components: {
@@ -147,6 +166,7 @@
     methods: {
       setNewsletter: mutations.setNewsletter,
       setArticle: mutations.setArticle,
+      updateNewsletterData: mutations.updateNewsletterData,
       onSubmit(evt) {
         evt.preventDefault()
         this.saveNewsletter()
@@ -201,6 +221,20 @@
       },
       showAlert() {
         this.dismissCountDown = this.dismissSecs
+      },
+      exportData(evt) {
+        evt.preventDefault()
+        var exported_data = JSON.stringify(this.newsletters)
+        var exported_filename =  "newsletter-data-" + Date.now() + ".json"
+        common.downloadFile(exported_data, exported_filename, "text/json")
+      },
+      importData() {
+        var input_file = this.$refs.fileInput.files[0]
+        var reader = new FileReader();
+        reader.onload = (event) => {
+          this.updateNewsletterData(JSON.parse(event.target.result))
+        }
+        reader.readAsText(input_file)
       }
     },
     mounted() {

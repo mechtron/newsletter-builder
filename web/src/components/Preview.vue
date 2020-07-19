@@ -3,13 +3,6 @@
     <b-container class="bv-example-row">
       <b-row>
         <b-col>
-          <input type="file" ref="fileInput" style="display: none" v-on:change="importData(this)">
-          <b-button variant="outline-primary" @click="$refs.fileInput.click()">Import Data</b-button>
-        </b-col>
-        <b-col> 
-          <b-button variant="outline-primary" @click="exportData">Export Data</b-button>
-        </b-col>
-        <b-col>
             <b-button variant="outline-success" @click="downloadNewsletter">
             Download <b-icon icon="download"></b-icon>
             </b-button>
@@ -24,11 +17,11 @@
     <b-tabs content-class="mt-3" justified>
       <b-tab title="Preview" active>
         <b-row>
-            <b-col col lg="1"></b-col>
-            <b-col cols="12">
+            <b-col col lg="3"></b-col>
+            <b-col cols lg="6">
               <div v-html="newsletterMarkup"></div>
             </b-col>
-            <b-col col lg="1"></b-col>
+            <b-col col lg="3"></b-col>
         </b-row>
       </b-tab>
       <b-tab title="Jekyll Markdown">
@@ -59,6 +52,7 @@
 <script>
   import axios from 'axios';
   import showdown from 'showdown';
+  import common from "./common";
   import { store, mutations } from "./store";
   export default {
     computed: {
@@ -100,7 +94,6 @@
       setNewsletterMarkdown: mutations.setNewsletterMarkdown,
       setNewsletterMarkup: mutations.setNewsletterMarkup,
       setNewsletterMarkupLastUpdated: mutations.setNewsletterMarkupLastUpdated,
-      updateNewsletterData: mutations.updateNewsletterData,
       updateLastUpdated() {
         var local_time = new Date().toLocaleTimeString()
         this.setNewsletterMarkupLastUpdated(local_time)
@@ -114,28 +107,6 @@
         var newsletter_markdown_html = converter.makeHtml(newsletter_markdown_preview)
         this.setNewsletterMarkup(newsletter_markdown_html)
         this.updateLastUpdated()
-      },
-      downloadFile(contents, filename, mimetype) {
-        let link = document.createElement("a");
-        let blob = new Blob([contents], {type: mimetype});
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        link.click();
-      },
-      exportData(evt) {
-        evt.preventDefault()
-        this.generateNewsletter(evt)
-        var exported_data = JSON.stringify(this.newsletters)
-        var exported_filename =  "newsletter-data-" + Date.now() + ".json"
-        this.downloadFile(exported_data, exported_filename, "text/json")
-      },
-      importData() {
-        var input_file = this.$refs.fileInput.files[0]
-        var reader = new FileReader();
-        reader.onload = (event) => {
-          this.updateNewsletterData(JSON.parse(event.target.result))
-        }
-        reader.readAsText(input_file)
       },
       generateNewsletterMarkdown(preview_mode) {
         var newsletter_articles = this.newsletters[this.selected_newsletter].articles
@@ -176,8 +147,6 @@
         }
         var newsletter_header_markdown = ""
         if (preview_mode) {
-          top_cream = top_cream.replace('{:target="_blank"}', '')
-          articles = articles.replace('{:target="_blank"}', '')
           newsletter_header_markdown = `# DevOps Industry Updates #${this.selected_newsletter}`
         } else {
           newsletter_header_markdown = String.raw`---
@@ -199,6 +168,9 @@ ${top_cream}
 ${articles}
 *Article version: ${this.newsletters[this.selected_newsletter].version}*
 `;
+        if (preview_mode) {
+          newsletter_markdown = newsletter_markdown.replaceAll('{:target="_blank"}', '')
+        }
         return newsletter_markdown
       },
       downloadNewsletterImages(exported_filename) {
@@ -218,7 +190,7 @@ ${articles}
           responseType: "blob"
         })
         .then(response => {
-          this.downloadFile(response.data, exported_filename, "application/zip");
+          common.downloadFile(response.data, exported_filename, "application/zip");
         })
         .catch(error => {
           console.log("Error downloading zip file:");
@@ -229,7 +201,7 @@ ${articles}
         evt.preventDefault()
         var newsletter_markdown = this.generateNewsletterMarkdown()
         this.exported_filename = `${this.newsletters[this.selected_newsletter].date}-DevOps-Industry-Updates-${this.selected_newsletter}`
-        this.downloadFile(newsletter_markdown, `${this.exported_filename}.md`, "text/markdown")
+        common.downloadFile(newsletter_markdown, `${this.exported_filename}.md`, "text/markdown")
         this.downloadNewsletterImages(`${this.exported_filename}.zip`)
       }
     }
