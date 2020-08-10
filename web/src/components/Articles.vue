@@ -44,7 +44,7 @@
                             </b-input-group>
                         </b-form-group>
 
-                        <b-form-group label="Title:" label-for="input-title">
+                        <b-form-group label-for="input-title">
                             <b-form-input
                               id="input-title"
                               v-model="form.title"
@@ -53,7 +53,7 @@
                             ></b-form-input>
                         </b-form-group>
 
-                        <b-form-group label="Author:" label-for="input-author">
+                        <b-form-group label-for="input-author">
                             <b-form-input
                               id="input-author"
                               v-model="form.author"
@@ -62,7 +62,7 @@
                             ></b-form-input>
                         </b-form-group>
 
-                        <b-form-group label="Description:" label-for="input-description">
+                        <b-form-group label-for="input-description">
                             <b-form-textarea
                               id="input-description"
                               v-model="form.description"
@@ -71,7 +71,7 @@
                             ></b-form-textarea>
                         </b-form-group>
 
-                        <b-form-group label="Category:" label-for="input-category">
+                        <b-form-group label-for="input-category">
                             <b-form-select
                               id="input-category"
                               v-model="form.category"
@@ -79,7 +79,7 @@
                             ></b-form-select>
                         </b-form-group>
 
-                        <b-form-group label="Image URL:" label-for="input-image-url">
+                        <b-form-group label-for="input-image-url">
                             <b-form-input
                               id="input-image-url"
                               v-model="form.image_url"
@@ -87,7 +87,7 @@
                             ></b-form-input>
                         </b-form-group>
 
-                        <b-form-group label="Image filename:" label-for="input-image-filename">
+                        <b-form-group label-for="input-image-filename">
                             <b-form-input
                               id="input-image-filename"
                               v-model="form.image_filename"

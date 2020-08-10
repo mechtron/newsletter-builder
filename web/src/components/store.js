@@ -23,7 +23,7 @@ export const store = Vue.observable({
     selected_newsletter: 0,
     selected_article: 0,
     article_categories: [
-        { text: 'Select One', value: null },
+        { text: 'Select Category', value: null },
         '🌎 Society',
         '📟 DevOps',
         '🛠️ DevOps Tools',
