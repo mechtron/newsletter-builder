@@ -137,7 +137,10 @@
                 }
               }
               articles += `- [${newsletter_articles[k].title}](${newsletter_articles[k].url}){:target="_blank"}`
-              if (newsletter_articles[k].author != null) {
+              if (
+                newsletter_articles[k].author != null &&
+                newsletter_articles[k].author != ""
+              ) {
                 articles += ` by ${newsletter_articles[k].author}`
               }
               articles += `: ${newsletter_articles[k].description}\n\n`
