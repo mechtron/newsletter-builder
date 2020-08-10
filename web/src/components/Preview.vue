@@ -143,7 +143,13 @@
               ) {
                 articles += ` by ${newsletter_articles[k].author}`
               }
-              articles += `: ${newsletter_articles[k].description}\n\n`
+              if (
+                newsletter_articles[k].description != null &&
+                newsletter_articles[k].description != ""
+              ) {
+                articles += `: ${newsletter_articles[k].description}`
+              }
+              articles += `\n\n`
             }
           }
           articles += `\n`
