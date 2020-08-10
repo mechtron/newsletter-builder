@@ -3,14 +3,14 @@ version: '3'
 services:
   api:
     container_name: newsletter_builder_api
-    image: mechtron/newsletter-builder-api:2.3.0
+    image: mechtron/newsletter-builder-api:2.4.0
     restart: always
     ports:
      - "8002:8000"
 
   web:
     container_name: newsletter_builder_web
-    image: mechtron/newsletter-builder-web:2.3.0
+    image: mechtron/newsletter-builder-web:2.4.0
     restart: always
     ports:
      - "8001:80"
