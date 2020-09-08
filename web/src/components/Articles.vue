@@ -199,7 +199,7 @@
             keyEvent: 'keydown',
             multipleKeys: [
               {
-                keyCode: 90, // Z
+                keyCode: 83, // S
                 modifiers: ['shiftKey'],
                 preventDefault: false,
               },
