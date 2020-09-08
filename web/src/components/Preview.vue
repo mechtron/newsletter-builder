@@ -136,10 +136,17 @@
                 ) {
                   image_filename = newsletter_articles[k].image_filename
                 }
+                var image_width = "600" // pixels
+                if (
+                  newsletter_articles[k].image_width != null &&
+                  newsletter_articles[k].image_width != ""
+                ) {
+                  image_width = newsletter_articles[k].image_width
+                }
                 if (preview_mode) {
-                  articles += `<p align="center"><img src="${newsletter_articles[k].image_url}" width="600"></p>\n`
+                  articles += `<p align="center"><img src="${newsletter_articles[k].image_url}" width="${image_width}"></p>\n`
                 } else {
-                  articles += `<p align="center"><img src="{{ site.url }}/images/diu-${this.selected_newsletter}/${image_filename}" width="600"></p>\n`
+                  articles += `<p align="center"><img src="{{ site.url }}/images/diu-${this.selected_newsletter}/${image_filename}" width="${image_width}"></p>\n`
                 }
               }
               articles += `- [${newsletter_articles[k].title}](${newsletter_articles[k].url}){:target="_blank"}`

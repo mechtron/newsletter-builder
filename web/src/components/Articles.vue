@@ -95,6 +95,14 @@
                             ></b-form-input>
                         </b-form-group>
 
+                        <b-form-group label-for="input-image-width">
+                            <b-form-input
+                              id="input-image-width"
+                              v-model="form.image_width"
+                              placeholder="Image width (pixels, optional)"
+                            ></b-form-input>
+                        </b-form-group>
+
                         <b-form-group>
                             <b-form-checkbox v-model="form.top_cream">Top cream?</b-form-checkbox>
                         </b-form-group>
@@ -180,6 +188,7 @@
           description: null,
           image_url: null,
           image_filename: null,
+          image_width: null,
           category: null,
           top_cream: false
         },
@@ -214,6 +223,7 @@
         this.newsletters[this.selected_newsletter].articles[this.selected_article].category = this.form.category
         this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url = this.form.image_url
         this.newsletters[this.selected_newsletter].articles[this.selected_article].image_filename = this.form.image_filename
+        this.newsletters[this.selected_newsletter].articles[this.selected_article].image_width = this.form.image_width
         this.newsletters[this.selected_newsletter].articles[this.selected_article].top_cream = this.form.top_cream
         this.showAlert()
       },
@@ -225,6 +235,7 @@
         this.form.category = null
         this.form.image_url = null
         this.form.image_filename = null
+        this.form.image_width = null
         this.form.top_cream = false
       },
       onReset(evt) {
@@ -263,6 +274,7 @@
             category: null,
             image_url: null,
             image_filename: null,
+            image_width: null,
             top_cream: false
         })
         this.changeArticle('last')
@@ -290,6 +302,7 @@
           this.form.category = this.newsletters[this.selected_newsletter].articles[this.selected_article].category
           this.form.image_url = this.newsletters[this.selected_newsletter].articles[this.selected_article].image_url
           this.form.image_filename = this.newsletters[this.selected_newsletter].articles[this.selected_article].image_filename
+          this.form.image_width = this.newsletters[this.selected_newsletter].articles[this.selected_article].image_width
           this.form.top_cream = this.newsletters[this.selected_newsletter].articles[this.selected_article].top_cream
         }
       },
