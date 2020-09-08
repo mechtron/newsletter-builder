@@ -236,7 +236,11 @@
         var input_file = this.$refs.fileInput.files[0]
         var reader = new FileReader();
         reader.onload = (event) => {
-          this.updateNewsletterData(JSON.parse(event.target.result))
+          var newsletters = JSON.parse(event.target.result);
+          this.updateNewsletterData(newsletters)
+          this.setNewsletter(Object.keys(newsletters).length - 1)
+          this.setArticle(0)
+          this.updateFormFields()
         }
         reader.readAsText(input_file)
       }
