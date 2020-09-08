@@ -184,9 +184,13 @@
         if (issues_numbers.length > 0) {
             next_issue_number = parseInt(issues_numbers[issues_numbers.length - 1]) + 1
         }
+        var now = new Date()
+        var day = ("0" + now.getDate()).slice(-2)
+        var month = ("0" + (now.getMonth() + 1)).slice(-2)
+        var today = now.getFullYear() + "-" + (month) + "-" + (day)
         this.newsletters[next_issue_number] = {
-            version: null,
-            date: null,
+            version: "1.0.0",
+            date: today,
             intro: null,
             articles: []
         }
@@ -194,9 +198,9 @@
         this.setNewsletter(next_issue_number)
         // Reset our form values
         this.form.issue_number = next_issue_number
-        this.form.version = null
-        this.form.date = null
-        this.form.intro = null
+        this.form.version = this.newsletters[next_issue_number]["version"]
+        this.form.date = this.newsletters[next_issue_number]["date"]
+        this.form.intro = this.newsletters[next_issue_number]["intro"]
         // Trick to reset/clear native browser form validation state
         this.show = false
         this.$nextTick(() => {
