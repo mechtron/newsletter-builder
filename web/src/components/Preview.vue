@@ -170,8 +170,7 @@ title: "DevOps Industry Updates #${this.selected_newsletter}"
 ---`
         }
         // Put it all together
-        var newsletter_markdown = String.raw`
-${newsletter_header_markdown}
+        var newsletter_markdown = String.raw`${newsletter_header_markdown}
 
 ${this.newsletters[this.selected_newsletter].intro}
 
