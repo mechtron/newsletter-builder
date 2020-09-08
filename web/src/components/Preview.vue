@@ -108,7 +108,7 @@
         this.setNewsletterMarkup(newsletter_markdown_html)
         this.updateLastUpdated()
       },
-      generateNewsletterMarkdown(preview_mode) {
+      generateNewsletterMarkdown(preview_mode=false, email_mode=false) {
         var newsletter_articles = this.newsletters[this.selected_newsletter].articles
         // Top Cream
         var top_cream = ""
@@ -137,11 +137,18 @@
                   image_filename = newsletter_articles[k].image_filename
                 }
                 var image_width = "600" // pixels
+                if (email_mode) {
+                  image_width = "300"
+                }
                 if (
                   newsletter_articles[k].image_width != null &&
                   newsletter_articles[k].image_width != ""
                 ) {
-                  image_width = newsletter_articles[k].image_width
+                  if (email_mode) {
+                    image_width = "300"
+                  } else {
+                    image_width = newsletter_articles[k].image_width
+                  }
                 }
                 if (preview_mode) {
                   articles += `<p align="center"><img src="${newsletter_articles[k].image_url}" width="${image_width}"></p>\n`
@@ -170,6 +177,11 @@
         var newsletter_header_markdown = ""
         if (preview_mode) {
           newsletter_header_markdown = `# DevOps Industry Updates #${this.selected_newsletter}`
+        } else if (email_mode) {
+          newsletter_header_markdown = String.raw`---
+layout: post
+title: "DevOps Industry Updates #9999"
+---`
         } else {
           newsletter_header_markdown = String.raw`---
 layout: post
@@ -220,10 +232,12 @@ ${articles}
       },
       downloadNewsletter(evt) {
         evt.preventDefault()
-        var newsletter_markdown = this.generateNewsletterMarkdown()
-        this.exported_filename = `${this.newsletters[this.selected_newsletter].date}-DevOps-Industry-Updates-${this.selected_newsletter}`
-        common.downloadFile(newsletter_markdown, `${this.exported_filename}.md`, "text/markdown")
-        this.downloadNewsletterImages(`${this.exported_filename}.zip`)
+        var newsletter_markdown = this.generateNewsletterMarkdown(false)
+        var newsletter_markdown_email = this.generateNewsletterMarkdown(false, true)
+        this.exported_filename_prefix = `${this.newsletters[this.selected_newsletter].date}-DevOps-Industry-Updates`
+        common.downloadFile(newsletter_markdown, `${this.exported_filename_prefix}-${this.selected_newsletter}.md`, "text/markdown")
+        common.downloadFile(newsletter_markdown_email, `${this.exported_filename_prefix}-9999.md`, "text/markdown")
+        this.downloadNewsletterImages(`${this.exported_filename_prefix}-${this.selected_newsletter}.zip`)
       }
     }
   }
