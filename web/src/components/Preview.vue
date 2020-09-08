@@ -125,9 +125,15 @@
           articles += `## ${this.article_categories[j]} \n\n`
           for (var k = 0; k < newsletter_articles.length; k++) {
             if (newsletter_articles[k].category == this.article_categories[j]) {
-              if (newsletter_articles[k].image_url != null) {
+              if (
+                newsletter_articles[k].image_url != null &&
+                newsletter_articles[k].image_url != ""
+              ) {
                 var image_filename = newsletter_articles[k].image_url.split("/").pop()
-                if (newsletter_articles[k].image_filename !=(null || "")) {
+                if (
+                  newsletter_articles[k].image_filename != null &&
+                  newsletter_articles[k].image_filename != ""
+                ) {
                   image_filename = newsletter_articles[k].image_filename
                 }
                 if (preview_mode) {
