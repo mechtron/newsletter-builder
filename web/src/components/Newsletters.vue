@@ -179,7 +179,7 @@
       },
       newNewsletter(evt) {
         evt.preventDefault()
-        var issues_numbers = Object.keys(this.newsletters).sort()
+        var issues_numbers = Object.keys(this.newsletters)
         var next_issue_number = 0
         if (issues_numbers.length > 0) {
             next_issue_number = parseInt(issues_numbers[issues_numbers.length - 1]) + 1
