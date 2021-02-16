@@ -108,6 +108,16 @@
         this.setNewsletterMarkup(newsletter_markdown_html)
         this.updateLastUpdated()
       },
+      getCategoryArticles(category) {
+        var newsletter_articles = this.newsletters[this.selected_newsletter].articles
+        var return_articles = []
+        for (var k = 0; k < newsletter_articles.length; k++) {
+          if (newsletter_articles[k].category == category) {
+            return_articles.push(newsletter_articles[k])
+          }
+        }
+        return return_articles
+      },
       generateNewsletterMarkdown(preview_mode=false, email_mode=false) {
         var newsletter_articles = this.newsletters[this.selected_newsletter].articles
         // Top Cream
@@ -122,55 +132,57 @@
         // Articles
         var articles = ""
         for (var j = 0; j < this.article_categories.length; j++) {
+          var category_articles = this.getCategoryArticles(this.article_categories[j])
+          if (category_articles.length == 0) {
+            continue
+          }
           articles += `## ${this.article_categories[j]} \n\n`
-          for (var k = 0; k < newsletter_articles.length; k++) {
-            if (newsletter_articles[k].category == this.article_categories[j]) {
+          for (var k = 0; k < category_articles.length; k++) {
+            if (
+              category_articles[k].image_url != null &&
+              category_articles[k].image_url != ""
+            ) {
+              var image_filename = category_articles[k].image_url.split("/").pop()
               if (
-                newsletter_articles[k].image_url != null &&
-                newsletter_articles[k].image_url != ""
+                category_articles[k].image_filename != null &&
+                category_articles[k].image_filename != ""
               ) {
-                var image_filename = newsletter_articles[k].image_url.split("/").pop()
-                if (
-                  newsletter_articles[k].image_filename != null &&
-                  newsletter_articles[k].image_filename != ""
-                ) {
-                  image_filename = newsletter_articles[k].image_filename
-                }
-                var image_width = "600" // pixels
+                image_filename = category_articles[k].image_filename
+              }
+              var image_width = "600" // pixels
+              if (email_mode) {
+                image_width = "300"
+              }
+              if (
+                category_articles[k].image_width != null &&
+                category_articles[k].image_width != ""
+              ) {
                 if (email_mode) {
                   image_width = "300"
-                }
-                if (
-                  newsletter_articles[k].image_width != null &&
-                  newsletter_articles[k].image_width != ""
-                ) {
-                  if (email_mode) {
-                    image_width = "300"
-                  } else {
-                    image_width = newsletter_articles[k].image_width
-                  }
-                }
-                if (preview_mode) {
-                  articles += `<p align="center"><img src="${newsletter_articles[k].image_url}" width="${image_width}"></p>\n`
                 } else {
-                  articles += `<p align="center"><img src="{{ site.url }}/images/diu-${this.selected_newsletter}/${image_filename}" width="${image_width}"></p>\n`
+                  image_width = category_articles[k].image_width
                 }
               }
-              articles += `- [${newsletter_articles[k].title}](${newsletter_articles[k].url}){:target="_blank"}`
-              if (
-                newsletter_articles[k].author != null &&
-                newsletter_articles[k].author != ""
-              ) {
-                articles += ` by ${newsletter_articles[k].author}`
+              if (preview_mode) {
+                articles += `<p align="center"><img src="${category_articles[k].image_url}" width="${image_width}"></p>\n`
+              } else {
+                articles += `<p align="center"><img src="{{ site.url }}/images/diu-${this.selected_newsletter}/${image_filename}" width="${image_width}"></p>\n`
               }
-              if (
-                newsletter_articles[k].description != null &&
-                newsletter_articles[k].description != ""
-              ) {
-                articles += `: ${newsletter_articles[k].description}`
-              }
-              articles += `\n\n`
             }
+            articles += `- [${category_articles[k].title}](${category_articles[k].url}){:target="_blank"}`
+            if (
+              category_articles[k].author != null &&
+              category_articles[k].author != ""
+            ) {
+              articles += ` by ${category_articles[k].author}`
+            }
+            if (
+              category_articles[k].description != null &&
+              category_articles[k].description != ""
+            ) {
+              articles += `: ${category_articles[k].description}`
+            }
+            articles += `\n\n`
           }
           articles += `\n`
         }
@@ -180,7 +192,7 @@
         } else if (email_mode) {
           newsletter_header_markdown = String.raw`---
 layout: post
-title: "DevOps Industry Updates #9999"
+title: "DevOps Industry Updates #0000"
 ---`
         } else {
           newsletter_header_markdown = String.raw`---
@@ -236,7 +248,7 @@ ${articles}
         var newsletter_markdown_email = this.generateNewsletterMarkdown(false, true)
         this.exported_filename_prefix = `${this.newsletters[this.selected_newsletter].date}-DevOps-Industry-Updates`
         common.downloadFile(newsletter_markdown, `${this.exported_filename_prefix}-${this.selected_newsletter}.md`, "text/markdown")
-        common.downloadFile(newsletter_markdown_email, `${this.exported_filename_prefix}-9999.md`, "text/markdown")
+        common.downloadFile(newsletter_markdown_email, `${this.exported_filename_prefix}-0000.md`, "text/markdown")
         this.downloadNewsletterImages(`${this.exported_filename_prefix}-${this.selected_newsletter}.zip`)
       }
     }
