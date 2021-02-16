@@ -60,7 +60,7 @@
         return store.newsletters;
       },
       article_categories() {
-        return store.article_categories.slice(1);
+        return store.article_categories;
       },
       selected_newsletter() {
         return store.selected_newsletter;

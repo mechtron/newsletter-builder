@@ -72,11 +72,12 @@
                         </b-form-group>
 
                         <b-form-group label-for="input-category">
-                            <b-form-select
-                              id="input-category"
-                              v-model="form.category"
-                              :options="categories"
-                            ></b-form-select>
+                          <b-form-select
+                            id="input-category"
+                            v-model="form.category"
+                            required
+                            :options="categories"
+                          ></b-form-select>
                         </b-form-group>
 
                         <b-form-group label-for="input-image-url">
