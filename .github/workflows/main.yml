@@ -96,7 +96,7 @@ jobs:
             helm/newsletter-builder $DEV_IMAGE_PARAMS \
             --set envName=${{ steps.prep_deploy.outputs.env_name }} \
             --set hostname=${{ steps.prep_deploy.outputs.hostname }} \
-            --set api.tinifyApiKey=${{ steps.prep_deploy.outputs.api_secret }}
+            --set api.tinifyApiKey=${{ steps.prep_deploy.outputs.api_tinify_api_key }}
           if [[ ${{ steps.prep_deploy.outputs.env_name }} != "newsletter-builder-prod" ]]
           then
             kubectl annotate namespace ${{ steps.prep_deploy.outputs.env_name }} janitor/expires=`date --utc -d "7 days" +%Y-%m-%dT%H:%M:%SZ` --overwrite=true
