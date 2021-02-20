@@ -29,7 +29,6 @@ spec:
             requests:
               cpu: 256m
               memory: 512Mi
-          command: [ "gunicorn", "--workers", "2", "--log-level", "debug", "--capture-output", "--bind", "0.0.0.0:8000", "api.wsgi" ]
           ports:
             - containerPort: 8000
               protocol: TCP
