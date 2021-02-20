@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "apiName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "releaseLabels" . | indent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: {{ template "apiName" . }}
+  template:
+    metadata:
+      labels:
+        name: {{ template "apiName" . }}
+        {{- include "releaseLabels" . | indent 8 }}
+      annotations:
+        checksum/config-map: {{ include (print $.Chart.Name "/templates/config-map.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 512m
+              memory: 1Gi
+            requests:
+              cpu: 256m
+              memory: 512Mi
+          command: [ "gunicorn", "--workers", "2", "--log-level", "debug", "--capture-output", "--bind", "0.0.0.0:8000", "api.wsgi" ]
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          env:
+          - name: TINIFY_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "apiName" . }}-tinify-api-key
+                key: tinify-api-key
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 2
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            timeoutSeconds: 5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "webName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "releaseLabels" . | indent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: {{ template "webName" . }}
+  template:
+    metadata:
+      labels:
+        name: {{ template "webName" . }}
+        {{- include "releaseLabels" . | indent 8 }}
+      annotations:
+        checksum/config-map: {{ include (print $.Chart.Name "/templates/config-map.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: web
+          image: {{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 64m
+              memory: 128Mi
+            requests:
+              cpu: 32m
+              memory: 64Mi
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 2
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 2
+            periodSeconds: 30
+            timeoutSeconds: 5

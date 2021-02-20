@@ -2,35 +2,109 @@ name: Build and deploy
 on:
   push:
     branches:
-    - master
+    - "*"
   create:
     tags:
       - "*"
 jobs:
-  build_and_deploy_job:
+  build_and_deploy:
     name: Build and deploy
     runs-on: ubuntu-18.04
     steps:
     - name: Checkout this repo
       uses: actions/checkout@v2
+    - name: Set environment
+      id: set_env
+      uses: mechtron/github-actions-set-env@3.0.0
+    - name: Login to Docker Hub
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Prepare for API Docker image build
+      id: prep_api
+      uses: mechtron/github-actions-docker-prepare@1.0.0
+      with:
+        image: mechtron/newsletter-builder-api
     - name: Build API Docker image
-      uses: docker/build-push-action@v1
+      uses: docker/build-push-action@v2
       with:
-        path: ./api/
-        dockerfile: ./api/Dockerfile.alpine
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: mechtron/newsletter-builder-api
-        tag_with_ref: true
+        context: ./api/
+        file: ./api/Dockerfile.alpine
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.prep_api.outputs.tags }}
+        labels: |
+          org.opencontainers.image.source=${{ github.event.repository.html_url }}
+          org.opencontainers.image.created=${{ steps.prep_api.outputs.created }}
+          org.opencontainers.image.revision=${{ github.sha }}
+    - name: Prepare for Web Docker image build
+      id: prep_web
+      uses: mechtron/github-actions-docker-prepare@1.0.0
+      with:
+        image: mechtron/newsletter-builder-web
     - name: Build Web Docker image
-      uses: docker/build-push-action@v1
+      uses: docker/build-push-action@v2
       with:
-        path: ./web/
-        dockerfile: ./web/Dockerfile
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: mechtron/newsletter-builder-web
-        tag_with_ref: true
+        context: ./web/
+        file: ./web/Dockerfile
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.prep_web.outputs.tags }}
+        labels: |
+          org.opencontainers.image.source=${{ github.event.repository.html_url }}
+          org.opencontainers.image.created=${{ steps.prep_web.outputs.created }}
+          org.opencontainers.image.revision=${{ github.sha }}
+    - name: Prepare for deployment
+      id: prep_deploy
+      run: |
+        if [[ "$GITHUB_REF" = "refs/heads/master" ]]
+        then
+            export HOSTNAME=nb.k8s.sandbox.ggops.com
+            export TINIFY_API_KEY=${{ secrets.TINIFY_API_KEY_PROD }}
+        else
+            export HOSTNAME=nb-${{ steps.set_env.outputs.env }}.k8s.sandbox.ggops.com
+            export TINIFY_API_KEY=${{ secrets.TINIFY_API_KEY_DEV }}
+        fi
+        echo ::set-output name=env_name::newsletter-builder-${{ steps.set_env.outputs.env }}
+        echo ::set-output name=hostname::${HOSTNAME}
+        echo ::set-output name=api_tinify_api_key::${TINIFY_API_KEY}
+    - name: Deploy Helm chart to EKS
+      uses: mechtron/github-actions-ek8s-toolbox@2.1.0
+      with:
+        awsAccessKeyId: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        awsSecretAccessKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        awsDefaultRegion: 'us-east-1'
+        eksClusterName: ${{ secrets.EKS_CLUSTER_NAME }}
+        helmVersion: '3.3.0'
+        helmfileVersion: '0.125.7'
+        kubectlVersion: '1.18.8'
+        istioctlVersion: '1.5.9'
+        kubevalVersion: '0.15.0'
+        command: |
+          helm repo add google https://charts.helm.sh/stable
+          export DEV_IMAGE_PARAMS=""
+          if [[ ${{ steps.prep_deploy.outputs.env_name }} != "newsletter-builder-prod" ]]
+          then
+            export DEV_IMAGE_PARAMS="--set api.image.tag=${{ steps.prep_api.outputs.version }} --set web.image.tag=${{ steps.prep_web.outputs.version }}"
+          fi
+          helm upgrade \
+            --install newsletter-builder \
+            --namespace=${{ steps.prep_deploy.outputs.env_name }} \
+            --create-namespace \
+            helm/newsletter-builder $DEV_IMAGE_PARAMS \
+            --set envName=${{ steps.prep_deploy.outputs.env_name }} \
+            --set hostname=${{ steps.prep_deploy.outputs.hostname }} \
+            --set api.tinifyApiKey=${{ steps.prep_deploy.outputs.api_secret }}
+          if [[ ${{ steps.prep_deploy.outputs.env_name }} != "newsletter-builder-prod" ]]
+          then
+            kubectl annotate namespace ${{ steps.prep_deploy.outputs.env_name }} janitor/expires=`date --utc -d "7 days" +%Y-%m-%dT%H:%M:%SZ` --overwrite=true
+          fi
+    - name: Output environment hostname
+      run: |
+        export HOSTNAME=https://${{ steps.prep_deploy.outputs.hostname }}
+        echo "Environment hostname is $HOSTNAME"
     - name: Setup node
       uses: actions/setup-node@v1
       with:
