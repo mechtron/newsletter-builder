@@ -6,6 +6,9 @@ import pathlib
 import shutil
 import tempfile
 
+import tinify
+tinify.key = os.getenv('TINIFY_API_KEY')
+
 from requests import get
 
 
@@ -45,6 +48,20 @@ def download_newsletter_images(newsletter_data, newsletter_id):
     return destination_base_path
 
 
+def optimize_images(downloaded_images_path):
+    file_blacklist = ['.DS_Store', '.svg', '.gif']
+    for file in os.listdir(downloaded_images_path):
+        file_illegal = False
+        for illegal_pattern in file_blacklist:
+            if illegal_pattern in file:
+                file_illegal = True
+        if file_illegal:
+            continue
+        file_path = "{}/{}".format(downloaded_images_path, file)
+        print("Optimizing {}..".format(file_path))
+        tinify.from_file(file_path).to_file(file_path)
+
+
 def zip_newsletter_images(downloaded_images_path):
     destination_filename = downloaded_images_path.split("/")[-1]
     destination_path = str(pathlib.Path(__file__).parent) + "/" + destination_filename
@@ -69,6 +86,7 @@ def main():
         newsletter_data[selected_newsletter],
         selected_newsletter,
     )
+    optimize_images(downloaded_images_path)
     zip_newsletter_images(downloaded_images_path)
     delete_temporary_folder(downloaded_images_path)
 
