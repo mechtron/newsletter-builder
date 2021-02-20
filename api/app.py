@@ -17,6 +17,11 @@ app = Flask(__name__)
 CORS(app, resources={r"/generate-newsletter": {"origins": "*"}})
 
 
+@app.route('/health', methods=['GET'])
+def health():
+    return 'OK'
+
+
 @app.route("/generate-newsletter", methods=["POST"])
 def generate_newsletter():
     request_data = json.loads(request.data)
