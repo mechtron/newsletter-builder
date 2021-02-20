@@ -105,20 +105,3 @@ jobs:
       run: |
         export HOSTNAME=https://${{ steps.prep_deploy.outputs.hostname }}
         echo "Environment hostname is $HOSTNAME"
-    - name: Setup node
-      uses: actions/setup-node@v1
-      with:
-        node-version: "9.x"
-    - name: Web install Node packages
-      run: cd web && npm install
-    - name: Web build
-      run: cd web && npm run build
-    - name: Sync Web to S3 bucket
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      with:
-        args: --delete
-      env:
-        AWS_S3_BUCKET: newsletter-builder
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        SOURCE_DIR: ./web/dist/
