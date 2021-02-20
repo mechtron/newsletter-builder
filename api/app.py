@@ -7,6 +7,7 @@ from flask_cors import CORS
 
 from newsletter_images import (
     download_newsletter_images,
+    optimize_images,
     zip_newsletter_images,
     delete_temporary_folder,
 )
@@ -23,6 +24,7 @@ def generate_newsletter():
         request_data["newsletter_data"],
         request_data["newsletter_id"],
     )
+    optimize_images(downloaded_images_path)
     zip_path = zip_newsletter_images(downloaded_images_path)
     delete_temporary_folder(downloaded_images_path)
     zip_file_name = Path(zip_path).name
