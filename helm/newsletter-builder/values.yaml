@@ -4,12 +4,12 @@ hostname: nb.k8s.sandbox.ggops.com
 api:
   image:
     repository: mechtron/newsletter-builder-api
-    tag: k8s-helm
+    tag: 2.8.0
   serviceType: NodePort
   tinifyApiKey: s3cr3t # use --set to override this in production
 
 web:
   image:
     repository: mechtron/newsletter-builder-web
-    tag: k8s-helm
+    tag: 2.8.0
   serviceType: NodePort
