@@ -59,7 +59,10 @@ def optimize_images(downloaded_images_path):
             continue
         file_path = "{}/{}".format(downloaded_images_path, file)
         print("Optimizing {}..".format(file_path))
-        tinify.from_file(file_path).to_file(file_path)
+        try:
+            tinify.from_file(file_path).to_file(file_path)
+        except Exception as e:
+            print("Error optimizing: ", e)
 
 
 def zip_newsletter_images(downloaded_images_path):
