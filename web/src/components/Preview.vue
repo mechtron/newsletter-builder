@@ -219,10 +219,13 @@ ${articles}
         return newsletter_markdown
       },
       downloadNewsletterImages(exported_filename) {
+        var generateNewsletterUrl = "../api/generate-newsletter"
+        if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+          generateNewsletterUrl = 'http://localhost:8000/generate-newsletter' // For local dev
+        }
         axios({
           method: 'post',
-          url: "../api/generate-newsletter",
-          // url: 'http://localhost/api/generate-newsletter', // For local dev
+          url: generateNewsletterUrl,
           headers: {
             'Access-Control-Allow-Origin': '*'
           },
